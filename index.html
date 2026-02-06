@@ -7,15 +7,13 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="application-name" content="Dza-Genius">
-    <meta name="apple-mobile-web-app-title" content="Dza-Genius">
     <meta name="theme-color" content="#0f172a">
-
-    <title>Dza-Genius Ultimate (Fixed)</title>
+    <title>Dza-Genius V7</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/adhan@4.4.4/dist/adhan.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/adhan/4.4.4/Adhan.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
 
@@ -33,98 +31,74 @@
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg-dark);
             color: #f8fafc;
-            height: 100dvh; /* Dynamic Height */
+            height: 100dvh;
             overflow: hidden;
             -webkit-tap-highlight-color: transparent;
             background-image: radial-gradient(#1e293b 1px, transparent 1px);
             background-size: 20px 20px;
         }
 
-        /* --- Layout --- */
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            padding-top: var(--safe-top);
-            padding-bottom: calc(70px + var(--safe-bottom));
-        }
+        /* Layout */
+        .app-container { display: flex; flex-direction: column; height: 100%; padding-top: var(--safe-top); padding-bottom: calc(75px + var(--safe-bottom)); }
 
-        /* --- Chat Area --- */
+        /* Pages */
         .page { display: none; height: 100%; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
-        .page.active { display: block; animation: fadeIn 0.3s ease-out; }
+        .page.active { display: block; animation: fadeUp 0.3s ease-out; }
 
-        .msg-bubble { max-width: 85%; padding: 12px 16px; margin-bottom: 12px; font-size: 14px; line-height: 1.6; position: relative; word-wrap: break-word; }
-        .msg-bot { background: #1e293b; border-radius: 18px 18px 18px 4px; color: #e2e8f0; border: 1px solid #334155; }
-        .msg-user { background: #2563eb; border-radius: 18px 18px 4px 18px; color: white; margin-right: auto; }
-        
-        .code-block { background: #020617; padding: 10px; border-radius: 8px; font-family: monospace; overflow-x: auto; margin: 5px 0; direction: ltr; border: 1px solid #334155; }
-        
-        /* --- Bottom Nav --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: calc(65px + var(--safe-bottom));
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-around;
-            padding-top: 12px;
-            z-index: 50;
-        }
+        /* Chat */
+        .msg-bubble { max-width: 85%; padding: 12px 16px; margin-bottom: 12px; font-size: 14px; position: relative; word-wrap: break-word; border-radius: 18px; }
+        .msg-bot { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-bottom-left-radius: 4px; }
+        .msg-user { background: #059669; color: white; margin-right: auto; border-bottom-right-radius: 4px; }
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 10px;
-            color: #64748b;
-            transition: all 0.3s ease;
-            width: 30%;
-            cursor: pointer;
-        }
-        .nav-item.active { color: var(--primary); transform: translateY(-3px); }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; }
-
-        /* --- Cards --- */
+        /* Widget Cards */
         .glass-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(8px);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
+        
+        .prayer-active { border: 1px solid #10b981; background: rgba(16, 185, 129, 0.1); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .typing-indicator span { display: inline-block; width: 6px; height: 6px; bg-gray-400; border-radius: 50%; margin: 0 2px; animation: typing 1.4s infinite; background-color: #9ca3af; }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%;
+            height: calc(70px + var(--safe-bottom));
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-around; padding-top: 12px; z-index: 50;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; width: 25%; transition: 0.3s; cursor: pointer; }
+        .nav-item.active { color: var(--primary); transform: translateY(-4px); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .pulse-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); animation: pulse-green 2s infinite; }
+        @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
     </style>
 </head>
 <body>
 
-    <div id="welcomeModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden bg-slate-900/95 backdrop-blur-sm">
-        <div class="bg-slate-800 border border-slate-600 rounded-2xl p-6 w-full max-w-sm text-center shadow-2xl">
+    <div id="welcomeModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden bg-black/80 backdrop-blur">
+        <div class="glass-card w-full max-w-sm text-center border border-green-500/30">
             <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl animate-bounce">🇩🇿</div>
-            <h2 class="text-xl font-bold mb-2 text-white">إعداد Dza-Genius</h2>
-            <p class="text-sm text-gray-300 mb-6">مرحبا بيك! التطبيق يحتاج مفتاح (API Key) باش يخدم.</p>
+            <h2 class="text-xl font-bold mb-2">مرحبا بك في Dza-Genius V7</h2>
+            <p class="text-xs text-gray-400 mb-4">التطبيق الجزائري الشامل: ذكاء اصطناعي، صلاة، طقس، وأدوات.</p>
             
-            <div class="text-left mb-4">
-                <label class="text-xs text-gray-400 block mb-1">المحرك (Provider):</label>
-                <select id="welcomeProvider" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm mb-3 text-white outline-none">
-                    <option value="groq">Groq (مجاني - Llama 3.3)</option>
+            <div class="text-left mb-4 bg-slate-800 p-3 rounded-xl">
+                <label class="text-[10px] text-gray-400 uppercase font-bold block mb-1">اختر المحرك (AI Engine)</label>
+                <select id="welcomeProvider" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm mb-3 outline-none">
+                    <option value="groq">Groq (Llama 3.3 - مجاني وسريع)</option>
                     <option value="openai">OpenAI (GPT-4o)</option>
                 </select>
-                
-                <label class="text-xs text-gray-400 block mb-1">مفتاح API:</label>
-                <input type="password" id="welcomeKey" placeholder="gsk_... أو sk-..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm font-mono text-white outline-none focus:border-green-500">
-                <a href="https://console.groq.com/keys" target="_blank" class="text-[11px] text-blue-400 mt-2 block hover:underline text-center">👉 اضغط هنا للحصول على مفتاح Groq مجاني</a>
+                <input type="password" id="welcomeKey" placeholder="الصق مفتاح API هنا..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm font-mono outline-none focus:border-green-500">
+                <a href="https://console.groq.com/keys" target="_blank" class="text-[10px] text-blue-400 mt-2 block text-center hover:underline">احصل على مفتاح مجاني من هنا</a>
             </div>
-
-            <button onclick="finishOnboarding()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl transition shadow-lg">حفظ وبدء الاستخدام ✅</button>
+            <button onclick="finishOnboarding()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl transition">ابدأ الآن</button>
         </div>
     </div>
 
@@ -132,34 +106,39 @@
         
         <header class="flex justify-between items-center px-4 py-3 bg-slate-900/80 backdrop-blur sticky top-0 z-40 border-b border-slate-800">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-green-600 to-teal-600 flex items-center justify-center text-white font-bold text-xs shadow-lg">DZ</div>
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-green-600 to-emerald-800 flex items-center justify-center text-white font-bold text-xs shadow-lg">DZ</div>
                 <div>
-                    <h1 class="font-bold text-sm text-white">Dza-Genius v6</h1>
-                    <div id="statusIndicator" class="text-[10px] text-green-400 flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> متصل
+                    <h1 class="font-bold text-sm text-white">Dza-Genius V7</h1>
+                    <div class="text-[10px] text-green-400 flex items-center gap-1">
+                        <div class="pulse-dot w-1.5 h-1.5"></div> متصل
                     </div>
                 </div>
             </div>
-            <button onclick="installPWA()" id="installBtn" class="hidden bg-slate-800 text-blue-400 text-xs px-3 py-1.5 rounded-full border border-slate-700 hover:bg-slate-700 transition">
-                <i class="fa-solid fa-download mr-1"></i> تثبيت
-            </button>
+            <div class="flex gap-2">
+                <button onclick="exportToPDF()" class="bg-slate-800 text-gray-300 text-xs px-3 py-1.5 rounded-full border border-slate-700">
+                    <i class="fa-solid fa-file-pdf"></i> PDF
+                </button>
+                <button onclick="installPWA()" id="installBtn" class="hidden bg-green-900/30 text-green-400 text-xs px-3 py-1.5 rounded-full border border-green-500/30">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
         </header>
 
-        <main id="view-chat" class="page active relative">
+        <main id="view-chat" class="page active">
             <div id="chatContainer" class="pb-24 min-h-[50vh]">
-                <div class="msg-bubble msg-bot shadow-md">
-                    <div class="text-xs font-bold text-green-400 mb-1">المساعد الذكي (Llama 3.3)</div>
-                    <div>واش خويا/أختي! 👋<br>راني هنا باش نعاونك. اسألني على أي حاجة (كود، رسائل إدارية، ولا قص نضحكوا شوية).</div>
+                <div class="msg-bubble msg-bot shadow-lg">
+                    <div class="text-xs font-bold text-green-400 mb-1">المساعد الذكي</div>
+                    <div>واش راك خويا/أختي! 👋<br>راني هنا نعاونك. كاش أسئلة، كود، ولا أدوات؟</div>
                 </div>
             </div>
             
-            <div class="fixed bottom-[calc(65px+var(--safe-bottom))] left-0 right-0 px-3 py-2 bg-gradient-to-t from-slate-900 via-slate-900/90 to-transparent z-40">
-                <div class="max-w-3xl mx-auto flex items-end gap-2 bg-slate-800 p-2 rounded-2xl border border-slate-700 shadow-xl">
-                    <button id="micBtn" onclick="toggleMic()" class="w-11 h-11 rounded-full bg-slate-700 text-gray-400 flex items-center justify-center flex-shrink-0 transition active:scale-90 hover:text-white">
+            <div class="fixed bottom-[calc(70px+var(--safe-bottom))] left-0 right-0 p-3 z-40 bg-gradient-to-t from-slate-900 via-slate-900/95 to-transparent">
+                <div class="max-w-3xl mx-auto flex items-end gap-2 bg-slate-800 p-2 rounded-2xl border border-slate-700 shadow-2xl">
+                    <button id="micBtn" onclick="toggleMic()" class="w-10 h-10 rounded-full bg-slate-700 text-gray-400 flex items-center justify-center flex-shrink-0 active:text-red-500 transition">
                         <i class="fa-solid fa-microphone"></i>
                     </button>
-                    <textarea id="msgInput" rows="1" placeholder="اكتب رسالتك..." class="flex-1 bg-transparent text-white text-sm p-3 focus:outline-none resize-none max-h-32 leading-relaxed" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-                    <button onclick="sendMsg()" id="sendBtn" class="w-11 h-11 rounded-full bg-green-600 text-white flex items-center justify-center flex-shrink-0 shadow-lg active:scale-90 transition hover:bg-green-500">
+                    <textarea id="msgInput" rows="1" placeholder="اكتب هنا..." class="flex-1 bg-transparent text-white text-sm p-2.5 focus:outline-none resize-none max-h-32" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+                    <button onclick="sendMsg()" class="w-10 h-10 rounded-full bg-green-600 hover:bg-green-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg transition transform active:scale-95">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </div>
@@ -167,57 +146,61 @@
         </main>
 
         <main id="view-tools" class="page">
-            <h2 class="text-lg font-bold mb-4 px-1 text-gray-300">أدوات جزائرية 🇩🇿</h2>
-            
-            <div class="glass-card border-l-4 border-yellow-500">
-                <div class="flex items-center gap-3 mb-3 text-yellow-500">
-                    <i class="fa-solid fa-building-columns text-xl"></i>
-                    <h3 class="font-bold text-sm">حاسبة مفتاح CCP</h3>
+            <h2 class="text-lg font-bold mb-4 px-1 text-gray-300">الأدوات اليومية</h2>
+
+            <div class="glass-card flex justify-between items-center bg-gradient-to-br from-blue-900/40 to-slate-900">
+                <div>
+                    <h3 class="text-xs text-blue-300 font-bold mb-1"><i class="fa-solid fa-cloud-sun"></i> الطقس (الجزائر)</h3>
+                    <div id="weatherTemp" class="text-3xl font-bold text-white">--°C</div>
+                    <div id="weatherDesc" class="text-xs text-gray-400">جاري التحميل...</div>
+                </div>
+                <div class="text-4xl text-yellow-400"><i class="fa-solid fa-sun"></i></div>
+            </div>
+
+            <div class="glass-card">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-green-400"><i class="fa-solid fa-mosque"></i> مواقيت الصلاة</h3>
+                    <div id="nextPrayerTimer" class="text-xs bg-green-900/50 text-green-300 px-2 py-1 rounded-full border border-green-500/30">--:--:--</div>
+                </div>
+                <div id="prayerList" class="space-y-1 text-sm">Loading...</div>
+                <div class="mt-3 pt-2 border-t border-gray-700 text-[10px] text-gray-500 flex justify-between">
+                    <span>📍 الجزائر العاصمة (افتراضي)</span>
+                    <span>🕋 القبلة: ~105° شرق</span>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="flex items-center gap-2 mb-3 text-purple-400">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <h3 class="font-bold text-sm">حاسبة المعدل (تقديري)</h3>
+                </div>
+                <div class="flex gap-2 mb-2">
+                    <input type="number" id="gradeSum" placeholder="مجموع النقاط" class="w-1/2 bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-center">
+                    <input type="number" id="coeffSum" placeholder="مجموع المعاملات" class="w-1/2 bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-center">
+                </div>
+                <button onclick="calcGrade()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg text-xs mb-2">احسب المعدل</button>
+                <div id="gradeResult" class="hidden text-center p-2 bg-slate-900 rounded border border-purple-500/30 font-bold text-white"></div>
+            </div>
+
+            <div class="glass-card">
+                <div class="flex items-center gap-2 mb-2 text-yellow-500">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <h3 class="font-bold text-sm">مفتاح CCP</h3>
                 </div>
                 <div class="flex gap-2">
-                    <input type="number" id="ccpInput" placeholder="أدخل رقم الحساب (بدون المفتاح)" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-center outline-none focus:border-yellow-500 text-white font-mono">
-                    <button onclick="calculateCCP()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 rounded-lg text-sm font-bold">احسب</button>
+                    <input type="number" id="ccpInput" placeholder="رقم الحساب" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-center">
+                    <button onclick="calcCCP()" class="bg-yellow-600 text-white px-3 rounded-lg text-xs">احسب</button>
                 </div>
-                <div id="ccpOutput" class="mt-3 hidden p-3 bg-slate-900/50 rounded-lg text-center border border-dashed border-gray-600"></div>
+                <div id="ccpResult" class="mt-2 text-center text-sm hidden font-mono"></div>
             </div>
 
-            <div class="glass-card border-l-4 border-purple-500">
-                <div class="flex items-center gap-3 mb-3 text-purple-400">
-                    <i class="fa-solid fa-map-location-dot text-xl"></i>
-                    <h3 class="font-bold text-sm">بحث الولايات</h3>
+             <div class="glass-card">
+                <h3 class="font-bold text-sm text-red-400 mb-3"><i class="fa-solid fa-phone-volume"></i> أرقام الطوارئ</h3>
+                <div class="flex justify-between gap-2">
+                    <a href="tel:14" class="flex-1 bg-slate-800 p-2 rounded-lg text-center text-xs hover:bg-red-900/20 border border-slate-700">14 الحماية</a>
+                    <a href="tel:17" class="flex-1 bg-slate-800 p-2 rounded-lg text-center text-xs hover:bg-blue-900/20 border border-slate-700">17 الشرطة</a>
+                    <a href="tel:1055" class="flex-1 bg-slate-800 p-2 rounded-lg text-center text-xs hover:bg-green-900/20 border border-slate-700">1055 الدرك</a>
                 </div>
-                <div class="flex gap-2 relative">
-                    <input type="text" id="wilayaInput" placeholder="اكتب رقم أو اسم الولاية..." class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm outline-none text-white">
-                    <button onclick="searchWilaya()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 rounded-lg"><i class="fa-solid fa-search"></i></button>
-                </div>
-                <div id="wilayaResult" class="mt-2 text-sm text-gray-300 font-bold p-1"></div>
-            </div>
-
-            <div class="glass-card border-l-4 border-green-500">
-                <div class="flex items-center gap-3 mb-3 text-green-500">
-                    <i class="fa-solid fa-money-bill-transfer text-xl"></i>
-                    <h3 class="font-bold text-sm">السكوار (Square)</h3>
-                </div>
-                <div class="grid grid-cols-2 gap-2 mb-3">
-                    <div class="bg-slate-900 p-2 rounded text-center border border-slate-700">
-                        <div class="text-[10px] text-gray-500">1 EUR (€)</div>
-                        <input type="number" id="rateEur" value="245" class="w-full bg-transparent text-center font-bold text-white outline-none">
-                    </div>
-                    <div class="bg-slate-900 p-2 rounded text-center border border-slate-700">
-                        <div class="text-[10px] text-gray-500">1 USD ($)</div>
-                        <input type="number" id="rateUsd" value="225" class="w-full bg-transparent text-center font-bold text-white outline-none">
-                    </div>
-                </div>
-                <input type="number" id="moneyInput" placeholder="المبلغ" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-center outline-none text-white">
-                <div id="moneyOutput" class="text-center font-bold text-xl text-green-400 mt-2">0 DA</div>
-            </div>
-            
-             <div class="glass-card border-l-4 border-blue-500">
-                <div class="flex items-center gap-3 mb-3 text-blue-400">
-                    <i class="fa-solid fa-mosque text-xl"></i>
-                    <h3 class="font-bold text-sm">مواقيت الصلاة (الجزائر)</h3>
-                </div>
-                <div id="prayerOutput" class="space-y-2 text-sm font-mono">Running...</div>
             </div>
         </main>
 
@@ -225,27 +208,26 @@
             <h2 class="text-lg font-bold mb-4 px-1 text-gray-300">الإعدادات</h2>
             
             <div class="glass-card">
-                <label class="text-xs text-gray-400 block mb-2 font-bold">الشخصية (Persona)</label>
+                <label class="text-xs text-gray-500 block mb-2 font-bold">الشخصية (Mode)</label>
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="changePersona('darja')" class="persona-btn p-3 bg-slate-800 rounded-lg text-xs border border-green-500 text-green-400">🗣️ الدارجة</button>
-                    <button onclick="changePersona('admin')" class="persona-btn p-3 bg-slate-800 rounded-lg text-xs hover:bg-slate-700 text-gray-300">⚖️ إداري</button>
-                    <button onclick="changePersona('tech')" class="persona-btn p-3 bg-slate-800 rounded-lg text-xs hover:bg-slate-700 text-gray-300">💻 مبرمج</button>
-                    <button onclick="changePersona('poet')" class="persona-btn p-3 bg-slate-800 rounded-lg text-xs hover:bg-slate-700 text-gray-300">✒️ شاعر</button>
+                    <button onclick="setMode('darja')" class="mode-btn bg-slate-800 p-3 rounded-lg text-xs border border-green-500 text-green-400">🗣️ الدارجة</button>
+                    <button onclick="setMode('admin')" class="mode-btn bg-slate-800 p-3 rounded-lg text-xs text-gray-400">⚖️ إداري</button>
+                    <button onclick="setMode('tech')" class="mode-btn bg-slate-800 p-3 rounded-lg text-xs text-gray-400">💻 مبرمج</button>
+                    <button onclick="setMode('islam')" class="mode-btn bg-slate-800 p-3 rounded-lg text-xs text-gray-400">🕌 ديني</button>
                 </div>
             </div>
 
             <div class="glass-card">
-                <label class="text-xs text-gray-400 block mb-2 font-bold">إعدادات المحرك (API)</label>
-                <select id="settingsProvider" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm mb-2 text-white outline-none" onchange="saveConfig()">
+                <label class="text-xs text-gray-500 block mb-2 font-bold">مفتاح API</label>
+                <select id="settingProvider" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm mb-2" onchange="saveSettings()">
                     <option value="groq">Groq (Llama 3.3)</option>
                     <option value="openai">OpenAI (GPT-4o)</option>
                 </select>
-                <input type="password" id="settingsKey" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm font-mono text-white outline-none focus:border-blue-500" onchange="saveConfig()">
-                <p class="text-[10px] text-gray-500 mt-2"><i class="fa-solid fa-lock"></i> يتم حفظ المفتاح في هاتفك فقط.</p>
+                <input type="password" id="settingKey" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm font-mono" onchange="saveSettings()">
             </div>
-
-            <button onclick="clearChatHistory()" class="w-full py-3 text-red-400 text-sm glass-card hover:bg-red-900/10 transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-trash"></i> مسح سجل المحادثة
+            
+            <button onclick="clearChat()" class="w-full p-3 text-red-400 bg-slate-800/50 rounded-xl text-xs flex items-center justify-center gap-2 hover:bg-red-900/20">
+                <i class="fa-solid fa-trash"></i> مسح الذاكرة
             </button>
         </main>
 
@@ -255,7 +237,7 @@
                 <span>محادثة</span>
             </div>
             <div class="nav-item" onclick="navTo('tools', this)">
-                <i class="fa-solid fa-layer-group"></i>
+                <i class="fa-solid fa-toolbox"></i>
                 <span>أدوات</span>
             </div>
             <div class="nav-item" onclick="navTo('settings', this)">
@@ -263,337 +245,253 @@
                 <span>إعدادات</span>
             </div>
         </nav>
-
     </div>
 
     <script>
-        // --- 1. GLOBAL CONSTANTS (Defined FIRST to fix "hoisting" errors) ---
-        
-        // Models Config (UPDATED MODELS HERE)
-        const MODELS = {
-            groq: 'llama-3.3-70b-versatile', // Newest model replacing deprecated one
-            openai: 'gpt-4o'
+        // --- Constants ---
+        const MODES = {
+            darja: { prompt: "You are an Algerian AI. Speak in Darja (Arabic/French mix). Be friendly." },
+            admin: { prompt: "You are an Algerian administrative expert. Write formal letters (Demandes, Recours) in Arabic/French." },
+            tech: { prompt: "You are a coding expert. Explain simply." },
+            islam: { prompt: "أنت مساعد ديني مطلع على الثقافة الإسلامية الجزائرية ومواقيت الصلاة." }
         };
+        const MODELS = { groq: 'llama-3.3-70b-versatile', openai: 'gpt-4o' };
+        let currentMode = 'darja';
 
-        const PERSONAS = {
-            darja: { 
-                name: "الدارجة",
-                prompt: "You are a friendly, witty Algerian AI assistant. You speak strictly in 'Algerian Darja' (Arabic mixed with French words like 'Sahit', 'Khouya', 'Normal', 'Bein sur'). Your tone is casual and helpful. Keep responses concise." 
-            },
-            admin: { 
-                name: "إداري",
-                prompt: "You are an expert in Algerian Administrative Law and Bureaucracy. You help users write formal letters (Demandes, Recours, Lettre de Motivation) strictly adhering to Algerian standards in Arabic or French. You are formal and precise." 
-            },
-            tech: { 
-                name: "مبرمج",
-                prompt: "You are a Senior Full Stack Developer. You provide clean, working code snippets. You explain complex concepts simply in Arabic or English." 
-            },
-            poet: { 
-                name: "شاعر",
-                prompt: "أنت شاعر شعبي جزائري (مثل عبد الرحمان المجدوب). تتحدث بالحكم، الأمثال الشعبية، والقافية. إجاباتك يجب أن تكون ذات طابع تراثي وعميق." 
-            }
-        };
-
-        const WILAYAS = {
-            "1": "أدرار", "2": "الشلف", "3": "الأغواط", "4": "أم البواقي", "5": "باتنة", "6": "بجاية", "7": "بسكرة", "8": "بشار", "9": "البليدة", "10": "البويرة", "11": "تمنراست", "12": "تبسة", "13": "تلمسان", "14": "تيارت", "15": "تيزي وزو", "16": "الجزائر", "17": "الجلفة", "18": "جيجل", "19": "سطيف", "20": "سعيدة", "21": "سكيكدة", "22": "سيدي بلعباس", "23": "عنابة", "24": "قالمة", "25": "قسنطينة", "26": "المدية", "27": "مستغانم", "28": "المسيلة", "29": "معسكر", "30": "ورقلة", "31": "وهران", "32": "البيض", "33": "إليزي", "34": "برج بوعريريج", "35": "بومرداس", "36": "الطارف", "37": "تندوف", "38": "تيسمسيلت", "39": "الوادي", "40": "خنشلة", "41": "سوق أهراس", "42": "تيبازة", "43": "ميلة", "44": "عين الدفلى", "45": "النعامة", "46": "عين تموشنت", "47": "غرداية", "48": "غليزان", "49": "تيميمون", "50": "برج باجي مختار", "51": "أولاد جلال", "52": "بني عباس", "53": "عين صالح", "54": "عين قزام", "55": "تقرت", "56": "جانت", "57": "المغير", "58": "المنيعة"
-        };
-
-        let currentPersona = 'darja';
-
-        // --- 2. INITIALIZATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // PWA Manifest Gen
-            const manifestData = {
+        // --- Init ---
+        window.onload = () => {
+            // PWA Manifest
+            const manifest = {
                 "name": "Dza-Genius", "short_name": "Dza-Genius", "start_url": ".", "display": "standalone",
                 "background_color": "#0f172a", "theme_color": "#0f172a",
                 "icons": [{ "src": "https://cdn-icons-png.flaticon.com/512/4712/4712109.png", "sizes": "192x192", "type": "image/png" }]
             };
-            const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
-            document.getElementById('manifest-placeholder').setAttribute('href', URL.createObjectURL(blob));
+            document.getElementById('manifest-placeholder').href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type: 'application/json'}));
 
-            // Load Config
+            // Load Settings
             const key = localStorage.getItem('dza_key');
-            if (!key) {
-                document.getElementById('welcomeModal').classList.remove('hidden');
-            } else {
-                document.getElementById('settingsKey').value = key;
-                document.getElementById('settingsProvider').value = localStorage.getItem('dza_provider') || 'groq';
-                loadHistory();
+            if(!key) document.getElementById('welcomeModal').classList.remove('hidden');
+            else {
+                document.getElementById('settingKey').value = key;
+                document.getElementById('settingProvider').value = localStorage.getItem('dza_provider') || 'groq';
+                if(localStorage.getItem('dza_history')) document.getElementById('chatContainer').innerHTML = localStorage.getItem('dza_history');
             }
-            
-            // Init Features
-            loadPrayerTimes();
-        });
 
-        // --- 3. UI FUNCTIONS ---
-        function finishOnboarding() {
-            const key = document.getElementById('welcomeKey').value.trim();
-            const provider = document.getElementById('welcomeProvider').value;
-            if (key) {
-                localStorage.setItem('dza_key', key);
-                localStorage.setItem('dza_provider', provider);
-                document.getElementById('settingsKey').value = key;
-                document.getElementById('settingsProvider').value = provider;
-                document.getElementById('welcomeModal').classList.add('hidden');
-                appendMsg('system', 'تم الإعداد بنجاح! جرب تسألني أي سؤال.');
-            } else {
-                alert('الرجاء إدخال المفتاح (API Key)');
-            }
-        }
+            // Init Tools
+            initPrayerTimes();
+            initWeather();
+            setInterval(updatePrayerCountdown, 1000); // Update timer every second
+        };
 
-        function navTo(view, el) {
+        // --- Functions: Navigation & Config ---
+        function navTo(page, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('view-' + view).classList.add('active');
+            document.getElementById('view-' + page).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
         }
 
-        function saveConfig() {
-            localStorage.setItem('dza_key', document.getElementById('settingsKey').value.trim());
-            localStorage.setItem('dza_provider', document.getElementById('settingsProvider').value);
-            document.getElementById('statusIndicator').innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> تم الحفظ`;
+        function finishOnboarding() {
+            const k = document.getElementById('welcomeKey').value;
+            const p = document.getElementById('welcomeProvider').value;
+            if(k) {
+                localStorage.setItem('dza_key', k);
+                localStorage.setItem('dza_provider', p);
+                document.getElementById('settingKey').value = k;
+                document.getElementById('settingProvider').value = p;
+                document.getElementById('welcomeModal').classList.add('hidden');
+            } else alert("يرجى إدخال المفتاح");
         }
 
-        function changePersona(key) {
-            currentPersona = key;
-            // Update UI
-            document.querySelectorAll('.persona-btn').forEach(b => {
-                b.classList.remove('border', 'border-green-500', 'text-green-400');
-                b.classList.add('text-gray-300');
+        function saveSettings() {
+            localStorage.setItem('dza_key', document.getElementById('settingKey').value);
+            localStorage.setItem('dza_provider', document.getElementById('settingProvider').value);
+        }
+
+        function setMode(m) {
+            currentMode = m;
+            document.querySelectorAll('.mode-btn').forEach(b => {
+                b.classList.remove('border-green-500', 'text-green-400');
+                b.classList.add('text-gray-400');
             });
-            event.target.classList.add('border', 'border-green-500', 'text-green-400');
-            event.target.classList.remove('text-gray-300');
-            
-            appendMsg('system', `تم تغيير الوضع إلى: <b>${PERSONAS[key].name}</b>`);
+            event.target.classList.add('border-green-500', 'text-green-400');
         }
 
-        // --- 4. CHAT ENGINE (FIXED) ---
-        const chatBox = document.getElementById('chatContainer');
-        const input = document.getElementById('msgInput');
-
-        function appendMsg(role, text) {
-            const div = document.createElement('div');
-            const isUser = role === 'user';
-            
-            if (role === 'system') {
-                div.className = 'text-center text-[10px] text-gray-500 my-2';
-                div.innerHTML = text;
-            } else {
-                div.className = `msg-bubble ${isUser ? 'msg-user' : 'msg-bot'} shadow-sm`;
-                
-                // Parse Content
-                div.innerHTML = isUser ? text.replace(/\n/g, '<br>') : marked.parse(text);
-
-                // Add TTS button for bot
-                if (!isUser) {
-                    const btn = document.createElement('button');
-                    btn.className = 'absolute -top-3 left-0 bg-slate-700 text-[10px] px-2 py-0.5 rounded-full text-gray-300 hover:text-white opacity-0 group-hover:opacity-100 transition';
-                    btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-                    btn.onclick = () => speak(text);
-                    div.classList.add('group'); // Enable hover
-                    div.appendChild(btn);
-                }
-            }
-
-            chatBox.appendChild(div);
-            div.scrollIntoView({ behavior: 'smooth' });
-            localStorage.setItem('dza_history_v6', chatBox.innerHTML);
-        }
-
+        // --- Functions: Chat ---
         async function sendMsg() {
-            const text = input.value.trim();
+            const input = document.getElementById('msgInput');
+            const txt = input.value.trim();
+            if(!txt) return;
+            
             const key = localStorage.getItem('dza_key');
-            const provider = localStorage.getItem('dza_provider') || 'groq';
-
-            if (!text) return;
-            if (!key) { navTo('settings', document.querySelectorAll('.nav-item')[2]); alert("يجب وضع مفتاح API أولاً"); return; }
+            if(!key) return navTo('settings', document.querySelectorAll('.nav-item')[2]);
 
             input.value = '';
-            input.style.height = 'auto';
-            appendMsg('user', text);
+            appendMsg('user', txt);
 
-            // Loader
-            const loaderId = 'load-' + Date.now();
+            const loadId = 'load-'+Date.now();
             const loader = document.createElement('div');
-            loader.id = loaderId;
-            loader.className = 'msg-bubble msg-bot typing-indicator';
-            loader.innerHTML = '<span></span><span></span><span></span>';
-            chatBox.appendChild(loader);
+            loader.id = loadId;
+            loader.className = 'msg-bubble msg-bot';
+            loader.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-green-500"></i>';
+            document.getElementById('chatContainer').appendChild(loader);
             loader.scrollIntoView();
 
             try {
-                // API ENDPOINTS
+                const provider = localStorage.getItem('dza_provider') || 'groq';
                 const url = provider === 'groq' ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions';
                 
-                const response = await fetch(url, {
+                const res = await fetch(url, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${key}`
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
                     body: JSON.stringify({
-                        model: MODELS[provider], // Uses the FIXED model names
-                        messages: [
-                            { role: "system", content: PERSONAS[currentPersona].prompt },
-                            { role: "user", content: text }
-                        ],
-                        temperature: 0.7
+                        model: MODELS[provider],
+                        messages: [{role:"system", content:MODES[currentMode].prompt}, {role:"user", content:txt}]
                     })
                 });
-
-                const data = await response.json();
-                document.getElementById(loaderId).remove();
-
-                if (data.error) {
-                    // Smart Error Handling
-                    let errMsg = data.error.message;
-                    if (errMsg.includes('invalid_api_key')) errMsg = "مفتاح API خاطئ. تأكد من الإعدادات.";
-                    if (errMsg.includes('model')) errMsg = "حدث تحديث في النماذج، يرجى تحديث التطبيق.";
-                    throw new Error(errMsg);
-                }
-
+                
+                const data = await res.json();
+                document.getElementById(loadId).remove();
+                if(data.error) throw new Error(data.error.message);
                 appendMsg('ai', data.choices[0].message.content);
 
-            } catch (error) {
-                document.getElementById(loaderId)?.remove();
-                appendMsg('system', `<span class="text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> خطأ: ${error.message}</span>`);
+            } catch(e) {
+                document.getElementById(loadId).remove();
+                appendMsg('system', 'Error: ' + e.message);
             }
         }
 
-        function loadHistory() {
-            const h = localStorage.getItem('dza_history_v6');
-            if (h) chatBox.innerHTML = h;
-        }
-        function clearChatHistory() {
-            if(confirm("مسح السجل؟")) {
-                chatBox.innerHTML = '';
-                localStorage.removeItem('dza_history_v6');
-            }
+        function appendMsg(role, text) {
+            const div = document.createElement('div');
+            div.className = `msg-bubble ${role==='user'?'msg-user':'msg-bot'}`;
+            div.innerHTML = role==='user' ? text.replace(/\n/g, '<br>') : marked.parse(text);
+            document.getElementById('chatContainer').appendChild(div);
+            div.scrollIntoView({behavior:'smooth'});
+            localStorage.setItem('dza_history', document.getElementById('chatContainer').innerHTML);
         }
 
-        // --- 5. TOOLS FUNCTIONS ---
-
-        // CCP Calculator (Fixed BigInt Logic)
-        function calculateCCP() {
-            const val = document.getElementById('ccpInput').value;
-            const out = document.getElementById('ccpOutput');
-            
-            if (val && val.length > 2) {
-                try {
-                    // Key = 97 - ((CCP * 100) % 97)
-                    const acc = BigInt(val); // Use BigInt for large numbers
-                    const x = acc * 100n;
-                    const remainder = x % 97n;
-                    const key = 97n - remainder;
-                    
-                    out.classList.remove('hidden');
-                    out.innerHTML = `
-                        <div class="text-gray-400 text-xs">RIP</div>
-                        <div class="text-white font-mono text-sm tracking-widest">${val} / <span class="text-yellow-400 font-bold">${key < 10 ? '0'+key : key}</span></div>
-                        <div class="mt-2 text-xs text-green-400">المفتاح (Clé) هو: <b>${key < 10 ? '0'+key : key}</b></div>
-                    `;
-                } catch (e) {
-                    out.classList.remove('hidden');
-                    out.innerHTML = '<span class="text-red-400">رقم الحساب غير صالح</span>';
-                }
-            }
-        }
-
-        // Wilaya Search
-        function searchWilaya() {
-            const q = document.getElementById('wilayaInput').value.trim();
-            const res = document.getElementById('wilayaResult');
-            
-            if (!q) return;
-
-            let found = "";
-            // Check if number
-            if (WILAYAS[q]) {
-                found = `<span class="text-purple-400">${q}</span> - ${WILAYAS[q]}`;
-            } else {
-                // Search by name
-                for (let [num, name] of Object.entries(WILAYAS)) {
-                    if (name.includes(q)) {
-                        found = `<span class="text-purple-400">${num}</span> - ${name}`;
-                        break;
-                    }
-                }
-            }
-
-            res.innerHTML = found ? `<i class="fa-solid fa-check-circle text-green-500"></i> ${found}` : `<span class="text-red-400">لم يتم العثور على الولاية</span>`;
-        }
-
-        // Currency
-        document.getElementById('moneyInput').addEventListener('input', (e) => {
-            const amount = parseFloat(e.target.value);
-            const rate = parseFloat(document.getElementById('rateEur').value);
-            if (amount) {
-                document.getElementById('moneyOutput').innerText = (amount * rate).toLocaleString() + " DA";
-            } else {
-                document.getElementById('moneyOutput').innerText = "0 DA";
-            }
-        });
-
-        // Prayer Times
-        function loadPrayerTimes() {
-            try {
-                const coords = new adhan.Coordinates(36.75, 3.05); // Algiers
-                const params = adhan.CalculationMethod.MuslimWorldLeague();
-                const date = new Date();
-                const pt = new adhan.PrayerTimes(coords, date, params);
-                const f = (t) => t.toLocaleTimeString('fr-DZ', {hour:'2-digit', minute:'2-digit'});
-                
-                document.getElementById('prayerOutput').innerHTML = `
-                    <div class="flex justify-between border-b border-gray-700/50 py-1"><span>الفجر</span><span class="text-blue-300 font-mono">${f(pt.fajr)}</span></div>
-                    <div class="flex justify-between border-b border-gray-700/50 py-1"><span>الظهر</span><span class="text-blue-300 font-mono">${f(pt.dhuhr)}</span></div>
-                    <div class="flex justify-between border-b border-gray-700/50 py-1"><span>العصر</span><span class="text-blue-300 font-mono">${f(pt.asr)}</span></div>
-                    <div class="flex justify-between border-b border-gray-700/50 py-1"><span>المغرب</span><span class="text-blue-300 font-mono">${f(pt.maghrib)}</span></div>
-                    <div class="flex justify-between py-1"><span>العشاء</span><span class="text-blue-300 font-mono">${f(pt.isha)}</span></div>
-                `;
-            } catch (e) { console.log("Prayer error"); }
-        }
-
-        // --- 6. UTILITIES ---
-        function toggleMic() {
-            if (!('webkitSpeechRecognition' in window)) {
-                alert("المتصفح لا يدعم التسجيل الصوتي. جرب Chrome.");
-                return;
-            }
-            const recognition = new webkitSpeechRecognition();
-            recognition.lang = 'ar-DZ';
-            recognition.start();
-            
-            const btn = document.getElementById('micBtn');
-            btn.classList.add('text-red-500', 'animate-pulse');
-            
-            recognition.onresult = (e) => {
-                input.value += " " + e.results[0][0].transcript;
-                btn.classList.remove('text-red-500', 'animate-pulse');
+        function exportToPDF() {
+            const element = document.getElementById('chatContainer');
+            const opt = {
+                margin: 10,
+                filename: 'Dza-Genius-Chat.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-            recognition.onend = () => btn.classList.remove('text-red-500', 'animate-pulse');
+            html2pdf().set(opt).from(element).save();
         }
 
-        function speak(txt) {
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(txt.replace(/[*#`]/g, ''));
-            u.lang = 'ar-SA';
-            window.speechSynthesis.speak(u);
+        function clearChat() {
+            if(confirm("مسح السجل؟")) {
+                document.getElementById('chatContainer').innerHTML = '';
+                localStorage.removeItem('dza_history');
+            }
         }
 
+        // --- Functions: Tools ---
+        
+        // 1. Weather (No API Key needed via Open-Meteo)
+        async function initWeather() {
+            try {
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=36.75&longitude=3.05&current_weather=true');
+                const data = await res.json();
+                document.getElementById('weatherTemp').innerText = `${data.current_weather.temperature}°C`;
+                document.getElementById('weatherDesc').innerText = `سرعة الرياح: ${data.current_weather.windspeed} كم/سا`;
+            } catch(e) { console.log("Weather Err"); }
+        }
+
+        // 2. Prayer Times (Adhan.js Logic)
+        let prayerTimesObj = null;
+        function initPrayerTimes() {
+            if(typeof adhan === 'undefined') return;
+            const coords = new adhan.Coordinates(36.75, 3.05); // Algiers
+            const params = adhan.CalculationMethod.MuslimWorldLeague();
+            const date = new Date();
+            prayerTimesObj = new adhan.PrayerTimes(coords, date, params);
+            
+            const fmt = (t) => t.toLocaleTimeString('fr-DZ', {hour:'2-digit', minute:'2-digit'});
+            
+            document.getElementById('prayerList').innerHTML = `
+                <div class="flex justify-between py-1 border-b border-gray-700/50" id="row-fajr"><span>الفجر</span><span class="font-mono text-blue-300">${fmt(prayerTimesObj.fajr)}</span></div>
+                <div class="flex justify-between py-1 border-b border-gray-700/50" id="row-dhuhr"><span>الظهر</span><span class="font-mono text-blue-300">${fmt(prayerTimesObj.dhuhr)}</span></div>
+                <div class="flex justify-between py-1 border-b border-gray-700/50" id="row-asr"><span>العصر</span><span class="font-mono text-blue-300">${fmt(prayerTimesObj.asr)}</span></div>
+                <div class="flex justify-between py-1 border-b border-gray-700/50" id="row-maghrib"><span>المغرب</span><span class="font-mono text-blue-300">${fmt(prayerTimesObj.maghrib)}</span></div>
+                <div class="flex justify-between py-1" id="row-isha"><span>العشاء</span><span class="font-mono text-blue-300">${fmt(prayerTimesObj.isha)}</span></div>
+            `;
+        }
+
+        function updatePrayerCountdown() {
+            if(!prayerTimesObj) return;
+            const now = new Date();
+            const next = prayerTimesObj.nextPrayer();
+            const nextTime = prayerTimesObj.timeForPrayer(next);
+            
+            if(nextTime) {
+                const diffMs = nextTime - now;
+                const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+                const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+                
+                // Format
+                const h = diffHrs < 10 ? '0'+diffHrs : diffHrs;
+                const m = diffMins < 10 ? '0'+diffMins : diffMins;
+                
+                document.getElementById('nextPrayerTimer').innerText = `- ${h}:${m}`;
+                
+                // Highlight active prayer
+                document.querySelectorAll('[id^="row-"]').forEach(r => r.classList.remove('text-green-400', 'font-bold'));
+                const nextName = next; // fajr, dhuhr...
+                const el = document.getElementById(`row-${nextName}`);
+                if(el) el.classList.add('text-green-400', 'font-bold');
+            } else {
+                document.getElementById('nextPrayerTimer').innerText = "تمت";
+            }
+        }
+
+        // 3. CCP
+        function calcCCP() {
+            const val = document.getElementById('ccpInput').value;
+            if(val) {
+                const key = 97n - ((BigInt(val) * 100n) % 97n);
+                document.getElementById('ccpResult').classList.remove('hidden');
+                document.getElementById('ccpResult').innerHTML = `Clé: <span class="text-yellow-400 text-lg font-bold">${key < 10 ? '0'+key : key}</span>`;
+            }
+        }
+
+        // 4. Grades
+        function calcGrade() {
+            const sum = parseFloat(document.getElementById('gradeSum').value);
+            const coeff = parseFloat(document.getElementById('coeffSum').value);
+            if(sum && coeff) {
+                const avg = (sum / coeff).toFixed(2);
+                const resDiv = document.getElementById('gradeResult');
+                resDiv.classList.remove('hidden');
+                resDiv.innerText = `المعدل: ${avg} / 20`;
+                resDiv.style.borderColor = avg >= 10 ? '#10b981' : '#ef4444';
+            }
+        }
+
+        // Voice
+        function toggleMic() {
+            if(!('webkitSpeechRecognition' in window)) return alert("المتصفح لا يدعم الصوت");
+            const r = new webkitSpeechRecognition();
+            r.lang = 'ar-DZ';
+            r.start();
+            document.getElementById('micBtn').classList.add('text-red-500');
+            r.onresult = e => { 
+                document.getElementById('msgInput').value += " " + e.results[0][0].transcript;
+                document.getElementById('micBtn').classList.remove('text-red-500');
+            };
+        }
+        
         // PWA Install
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
+            e.preventDefault(); deferredPrompt = e;
             document.getElementById('installBtn').classList.remove('hidden');
         });
         async function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') document.getElementById('installBtn').classList.add('hidden');
-                deferredPrompt = null;
-            }
+            if(deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
         }
     </script>
 </body>

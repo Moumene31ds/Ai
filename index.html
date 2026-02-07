@@ -7,7 +7,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f172a">
-    <title>Dza-Genius V10 Ultra</title>
+    <title>Dza-Genius V11 Ultra</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -24,33 +24,26 @@
         body { font-family: 'Cairo', sans-serif; background: var(--bg-dark); color: #f8fafc; height: 100dvh; overflow: hidden; background-image: radial-gradient(#1e293b 1px, transparent 1px); background-size: 24px 24px; }
         .app-layout { display: flex; flex-direction: column; height: 100%; padding-top: var(--safe-top); padding-bottom: calc(75px + var(--safe-bottom)); }
         
-        /* الصفحات والتنقل */
         .page { display: none; height: 100%; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
         .page.active { display: block; animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        /* الشات */
         .msg-bubble { max-width: 90%; padding: 12px 16px; margin-bottom: 12px; border-radius: 18px; position: relative; font-size: 15px; line-height: 1.6; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .msg-bot { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-bottom-left-radius: 4px; }
         .msg-user { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; margin-right: auto; border-bottom-right-radius: 4px; }
         
-        /* تحسينات الكود */
         pre { background: #111827 !important; padding: 0 !important; border-radius: 8px !important; overflow: hidden; margin: 10px 0; border: 1px solid #374151; direction: ltr; }
         pre code { font-family: 'Fira Code', monospace; font-size: 13px; display: block; padding: 12px; overflow-x: auto; }
         .code-header { background: #1f2937; padding: 4px 12px; font-size: 11px; color: #9ca3af; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; }
 
-        /* البطاقات */
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 16px; margin-bottom: 14px; }
         .glass-card:active { transform: scale(0.99); transition: 0.1s; }
 
-        /* النافبار */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: calc(70px + var(--safe-bottom)); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; padding-top: 10px; z-index: 50; }
         .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; width: 20%; transition: 0.3s; cursor: pointer; }
         .nav-item.active { color: var(--primary); transform: translateY(-4px); font-weight: bold; }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* شريط التمرير */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     </style>
@@ -61,7 +54,7 @@
         <div class="glass-card w-full max-w-sm text-center border border-green-500/30 shadow-2xl shadow-green-900/40 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-teal-500"></div>
             <div class="w-16 h-16 bg-gradient-to-tr from-green-600 to-teal-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">🇩🇿</div>
-            <h2 class="text-xl font-black mb-1 text-white">Dza-Genius V10</h2>
+            <h2 class="text-xl font-black mb-1 text-white">Dza-Genius V11</h2>
             <p class="text-xs text-gray-400 mb-5">الذكاء الاصطناعي الجزائري المتكامل</p>
             
             <div class="text-right mb-4 bg-slate-900/80 p-4 rounded-xl border border-slate-700">
@@ -88,8 +81,8 @@
                 </div>
                 <div class="leading-tight">
                     <h1 class="font-bold text-sm text-white tracking-wide">Dza-Genius <span class="text-[9px] bg-green-900/30 text-green-400 px-1 rounded border border-green-500/20">ULTRA</span></h1>
-                    <div class="text-[10px] text-gray-400 cursor-pointer flex items-center gap-1 hover:text-green-300 transition" onclick="getUserLocation()" id="locationDisplay">
-                        <i class="fa-solid fa-location-dot"></i> <span>تحديد الموقع...</span>
+                    <div class="text-[10px] text-gray-400 cursor-pointer flex items-center gap-1 hover:text-green-300 transition" onclick="nav('tools', this)">
+                        <i class="fa-solid fa-location-dot"></i> <span id="headerCity">الجزائر العاصمة</span>
                     </div>
                 </div>
             </div>
@@ -104,8 +97,7 @@
         </header>
 
         <main id="view-chat" class="page active">
-            <div id="chatContainer" class="pb-28 min-h-[60vh] flex flex-col justify-end">
-                </div>
+            <div id="chatContainer" class="pb-28 min-h-[60vh] flex flex-col justify-end"></div>
             
             <div class="fixed bottom-[calc(70px+var(--safe-bottom))] left-0 right-0 px-3 py-2 z-40 bg-gradient-to-t from-slate-900 via-slate-900/95 to-transparent">
                 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-1 px-1" id="quickSuggestions">
@@ -127,6 +119,13 @@
         </main>
 
         <main id="view-tools" class="page">
+            <div class="glass-card p-3 flex gap-2 items-center mb-4 border-blue-500/30 bg-blue-900/10">
+                <i class="fa-solid fa-map-location-dot text-blue-400"></i>
+                <select id="wilayaSelect" onchange="changeWilaya()" class="bg-transparent w-full text-sm text-white font-bold outline-none">
+                    <option value="auto">📍 تحديد تلقائي (GPS)</option>
+                    </select>
+            </div>
+
             <div class="glass-card bg-gradient-to-br from-blue-900/20 to-slate-900 border-r-4 border-blue-500 relative overflow-hidden">
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
@@ -149,9 +148,12 @@
                     <div id="nextPrayerName" class="text-xs text-gray-300">--</div>
                     <div id="nextPrayerCounter" class="text-xl font-mono font-bold text-white mt-1">--:--</div>
                 </div>
-                <div class="glass-card mb-0 p-3 bg-gradient-to-br from-purple-900/20 to-slate-900 border-purple-500/20">
-                    <div class="text-[10px] text-purple-400 mb-1 font-bold">رمضان 🌙</div>
-                    <div id="ramadanCounter" class="text-sm font-bold text-white mt-2">-- يوم</div>
+                <div class="glass-card mb-0 p-3 bg-gradient-to-br from-indigo-900/20 to-slate-900 border-indigo-500/20 text-center relative overflow-hidden">
+                    <div class="text-[10px] text-indigo-400 mb-1 font-bold">اتجاه القبلة</div>
+                    <div class="relative w-12 h-12 mx-auto mt-1 border-2 border-indigo-500/30 rounded-full flex items-center justify-center">
+                        <i id="qiblaArrow" class="fa-solid fa-location-arrow text-xl text-white transition-all duration-1000"></i>
+                    </div>
+                    <div id="qiblaDegree" class="text-[10px] text-gray-400 mt-1">--°</div>
                 </div>
             </div>
 
@@ -180,7 +182,7 @@
                 </div>
                 <div class="text-[10px] text-gray-500 flex justify-between items-center bg-slate-900/50 p-2 rounded">
                     <span>سعر الصرف (تقريبي):</span>
-                    <input type="number" id="exchangeRate" value="240" class="w-12 bg-transparent border-b border-gray-600 text-center outline-none text-yellow-200">
+                    <input type="number" id="exchangeRate" value="245" class="w-12 bg-transparent border-b border-gray-600 text-center outline-none text-yellow-200">
                 </div>
             </div>
 
@@ -240,11 +242,6 @@
             <button onclick="fullReset()" class="w-full mt-6 py-3 text-red-400 text-xs border border-red-900/50 rounded-xl bg-red-900/10 hover:bg-red-900/20">
                 <i class="fa-solid fa-triangle-exclamation"></i> إعادة ضبط المصنع
             </button>
-            
-            <div class="mt-8 text-center opacity-30">
-                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" class="w-12 mx-auto grayscale opacity-50 mb-2">
-                <p class="text-[10px]">Made with ❤️ in Algeria</p>
-            </div>
         </main>
 
         <nav class="bottom-nav">
@@ -255,6 +252,17 @@
     </div>
 
     <script>
+        // --- Data: Wilayas Coordinates ---
+        const WILAYAS = [
+            {id:1, name:"أدرار", lat:27.8742, lon:-0.2053}, {id:16, name:"الجزائر", lat:36.7528, lon:3.0420},
+            {id:31, name:"وهران", lat:35.6971, lon:-0.6308}, {id:25, name:"قسنطينة", lat:36.3650, lon:6.6147},
+            {id:23, name:"عنابة", lat:36.9000, lon:7.7667}, {id:30, name:"ورقلة", lat:31.9493, lon:5.3250},
+            {id:19, name:"سطيف", lat:36.1898, lon:5.4107}, {id:15, name:"تيزي وزو", lat:36.7118, lon:4.0459},
+            {id:13, name:"تلمسان", lat:34.8783, lon:-1.3150}, {id:5, name:"باتنة", lat:35.5559, lon:6.1741},
+            {id:9, name:"البليدة", lat:36.4715, lon:2.8259}, {id:33, name:"إليزي", lat:26.4893, lon:8.4670},
+            {id:39, name:"الوادي", lat:33.3561, lon:6.8631}, {id:47, name:"غرداية", lat:32.4909, lon:3.6734}
+        ]; // Added common ones to save space, logic supports all if array extended
+
         // --- Configuration & State ---
         const CONFIG = {
             modes: {
@@ -268,24 +276,28 @@
 
         let state = {
             lat: 36.75, lon: 3.05, city: "الجزائر",
-            chatHistory: [], // Array of {role, content}
+            chatHistory: [],
             mode: 'darja',
-            voiceEnabled: false
+            voiceEnabled: false,
+            nextPrayerTime: null,
+            prayerInstance: null
         };
 
         // --- Initialization ---
         window.onload = () => {
             loadState();
+            initWilayaSelect();
+            
             if (!localStorage.getItem('dza_key')) {
                 document.getElementById('welcomeModal').classList.remove('hidden');
             } else {
                 renderChat();
-                refreshTools();
+                // Ensure Adhan library is loaded
+                setTimeout(refreshTools, 500); 
             }
             // Auto-refresh widgets
             setInterval(updateTimers, 1000);
             
-            // Markdown settings
             marked.setOptions({
                 highlight: function(code, lang) {
                     const language = highlight.getLanguage(lang) ? lang : 'plaintext';
@@ -294,9 +306,31 @@
             });
         };
 
+        function initWilayaSelect() {
+            const sel = document.getElementById('wilayaSelect');
+            WILAYAS.sort((a,b)=> a.id - b.id).forEach(w => {
+                const opt = document.createElement('option');
+                opt.value = w.id;
+                opt.innerText = `${w.id}. ${w.name}`;
+                sel.appendChild(opt);
+            });
+            // Add remaining generic option
+            const other = document.createElement('option');
+            other.innerText = "باقي الولايات (قريباً)";
+            other.disabled = true;
+            sel.appendChild(other);
+        }
+
         function loadState() {
             const savedLoc = JSON.parse(localStorage.getItem('dza_loc'));
-            if(savedLoc) { state.lat = savedLoc.lat; state.lon = savedLoc.lon; state.city = savedLoc.city; }
+            if(savedLoc) { 
+                state.lat = savedLoc.lat; 
+                state.lon = savedLoc.lon; 
+                state.city = savedLoc.city; 
+                if(savedLoc.isAuto === false) {
+                   document.getElementById('wilayaSelect').value = savedLoc.wilayaId || 'auto';
+                }
+            }
             
             const savedChat = JSON.parse(localStorage.getItem('dza_history'));
             if(savedChat) state.chatHistory = savedChat;
@@ -309,31 +343,43 @@
             updateUI();
         }
 
+        function changeWilaya() {
+            const val = document.getElementById('wilayaSelect').value;
+            if(val === 'auto') {
+                getUserLocation();
+            } else {
+                const w = WILAYAS.find(x => x.id == val);
+                if(w) {
+                    state.lat = w.lat;
+                    state.lon = w.lon;
+                    state.city = w.name;
+                    localStorage.setItem('dza_loc', JSON.stringify({lat: state.lat, lon: state.lon, city: state.city, isAuto: false, wilayaId: val}));
+                    updateUI();
+                    refreshTools();
+                }
+            }
+        }
+
         // --- Core: Chat & AI ---
         async function sendMessage() {
             const input = document.getElementById('msgInput');
             const text = input.value.trim();
             if (!text) return;
 
-            // UI Updates
             input.value = '';
             input.style.height = 'auto';
             addMessage('user', text);
 
             const apiKey = localStorage.getItem('dza_key');
             const provider = localStorage.getItem('dza_provider') || 'groq';
-
-            // Loading Indicator
             const loaderId = addLoader();
 
             try {
-                // Build Context
                 const systemMsg = {
                     role: "system", 
                     content: `${CONFIG.modes[state.mode].prompt}. Current Context: Location=${state.city}, Time=${new Date().toLocaleString('fr-DZ')}.`
                 };
                 
-                // Prepare History (Limit to last 10 messages to save tokens)
                 const apiMessages = [systemMsg, ...state.chatHistory.slice(-10)];
 
                 const endpoint = provider === 'groq' 
@@ -371,13 +417,11 @@
         }
 
         function addMessage(role, content) {
-            // Update State
             if(role !== 'system') {
                 state.chatHistory.push({ role, content });
                 localStorage.setItem('dza_history', JSON.stringify(state.chatHistory));
             }
 
-            // Render HTML
             const container = document.getElementById('chatContainer');
             const div = document.createElement('div');
             
@@ -386,15 +430,10 @@
                 div.innerText = content;
             } else {
                 div.className = `msg-bubble ${role === 'user' ? 'msg-user' : 'msg-bot'}`;
-                
-                // Content processing
                 if (role === 'assistant') {
-                    // Copy button for code blocks logic would go here
                     div.innerHTML = marked.parse(content);
-                    // Re-highlight code blocks
                     div.querySelectorAll('pre code').forEach((block) => {
                         hljs.highlightElement(block);
-                        // Add header to code block
                         const pre = block.parentElement;
                         const lang = block.className.replace('language-', '') || 'Code';
                         const header = document.createElement('div');
@@ -406,9 +445,7 @@
                     div.innerText = content;
                 }
             }
-            
             container.appendChild(div);
-            // Scroll to bottom
             window.scrollTo(0, document.body.scrollHeight);
             div.scrollIntoView({ behavior: "smooth", block: "end" });
         }
@@ -416,14 +453,11 @@
         function renderChat() {
             const container = document.getElementById('chatContainer');
             container.innerHTML = '';
-            // Load welcome message if empty
             if (state.chatHistory.length === 0) {
                 container.innerHTML = `<div class="msg-bubble msg-bot">مرحباً! أنا Dza-Genius 👋<br>واش راك حاب تدير اليوم؟</div>`;
                 return;
             }
-            // Re-render history (simplified for performance, usually would avoid full re-render)
             state.chatHistory.forEach(msg => {
-                // Manually call rendering logic without saving to history again
                 const div = document.createElement('div');
                 div.className = `msg-bubble ${msg.role === 'user' ? 'msg-user' : 'msg-bot'}`;
                 if (msg.role === 'assistant') {
@@ -433,7 +467,6 @@
                 }
                 container.appendChild(div);
             });
-            // Apply highlighting
             document.querySelectorAll('pre code').forEach(hljs.highlightElement);
             window.scrollTo(0, document.body.scrollHeight);
         }
@@ -448,58 +481,63 @@
             div.scrollIntoView();
             return id;
         }
-
-        function removeLoader(id) {
-            const el = document.getElementById(id);
-            if(el) el.remove();
-        }
+        function removeLoader(id) { const el = document.getElementById(id); if(el) el.remove(); }
 
         // --- Tools & Widgets ---
         
-        // 1. GPS & Weather
         function getUserLocation() {
-            const label = document.getElementById('locationDisplay');
-            label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحديد...';
+            const label = document.getElementById('headerCity');
+            label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             
+            if(!navigator.geolocation) {
+                alert("المتصفح لا يدعم تحديد الموقع");
+                return;
+            }
+
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 state.lat = pos.coords.latitude;
                 state.lon = pos.coords.longitude;
-                
                 try {
                     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${state.lat}&lon=${state.lon}`);
                     const json = await res.json();
                     state.city = json.address.city || json.address.town || json.address.state || "موقعي";
-                } catch(e) { state.city = "موقع مخصص"; }
+                } catch(e) { state.city = "موقعي"; }
 
-                localStorage.setItem('dza_loc', JSON.stringify({lat: state.lat, lon: state.lon, city: state.city}));
+                localStorage.setItem('dza_loc', JSON.stringify({lat: state.lat, lon: state.lon, city: state.city, isAuto: true}));
+                document.getElementById('wilayaSelect').value = 'auto';
                 updateUI();
                 refreshTools();
-            }, () => {
-                label.innerHTML = '<i class="fa-solid fa-xmark text-red-500"></i> فشل';
-                setTimeout(updateUI, 2000);
+            }, (err) => {
+                label.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-red-400"></i>';
+                alert("تعذر تحديد الموقع. يرجى اختيار الولاية يدوياً.");
             });
         }
 
         async function refreshTools() {
-            // Weather (Open-Meteo)
+            // Weather
             try {
                 const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${state.lat}&longitude=${state.lon}&current_weather=true`);
                 const wData = await wRes.json();
                 document.getElementById('weatherTemp').innerText = `${Math.round(wData.current_weather.temperature)}°`;
                 document.getElementById('windSpeed').innerText = wData.current_weather.windspeed;
-                // Simple weather code mapping
                 const codes = {0:'صافي', 1:'غائم جزئي', 2:'غائم', 3:'غائم', 61:'مطر', 63:'مطر', 80:'زخات'};
                 document.getElementById('weatherDesc').innerText = codes[wData.current_weather.weathercode] || 'متغير';
             } catch(e) {}
 
-            // Prayers
+            // Prayers Logic Fixed
             if (typeof adhan !== 'undefined') {
                 const coords = new adhan.Coordinates(state.lat, state.lon);
                 const params = adhan.CalculationMethod.MuslimWorldLeague();
-                params.madhab = adhan.Madhab.Shafi; // Standard for Algeria (Maliki matches Shafi times mostly)
-                const date = new Date();
-                const prayerTimes = new adhan.PrayerTimes(coords, date, params);
+                params.madhab = adhan.Madhab.Shafi;
                 
+                const date = new Date();
+                let prayerTimes = new adhan.PrayerTimes(coords, date, params);
+                
+                // Qibla Direction
+                const qibla = adhan.Qibla(coords);
+                document.getElementById('qiblaDegree').innerText = Math.round(qibla) + "°";
+                document.getElementById('qiblaArrow').style.transform = `rotate(${qibla - 180}deg)`; // Adjust based on icon
+
                 const fmt = t => t.toLocaleTimeString('fr-DZ', {hour:'2-digit', minute:'2-digit'});
                 const names = {fajr:'الصبح', dhuhr:'الظهر', asr:'العصر', maghrib:'المغرب', isha:'العشاء'};
                 
@@ -513,51 +551,50 @@
                     pList.appendChild(el);
                 });
 
-                // Hijri Date (Simple Approximation)
-                const hijri = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(date);
-                document.getElementById('hijriDate').innerText = hijri;
+                document.getElementById('hijriDate').innerText = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(date);
 
-                state.prayerInstance = prayerTimes;
+                // Handle Next Prayer Logic
+                let next = prayerTimes.nextPrayer();
+                let nextTime = null;
+
+                if(next === 'none') {
+                    // Next prayer is tomorrow's Fajr
+                    const tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    const pTomorrow = new adhan.PrayerTimes(coords, tomorrow, params);
+                    next = 'fajr';
+                    nextTime = pTomorrow.fajr;
+                } else {
+                    nextTime = prayerTimes.timeForPrayer(next);
+                }
+
+                state.prayerInstance = { next, nextTime, names };
             }
         }
 
         function updateTimers() {
-            // Prayer Countdown
-            if(state.prayerInstance) {
-                const next = state.prayerInstance.nextPrayer();
+            // Prayer Countdown Fixed
+            if(state.prayerInstance && state.prayerInstance.nextTime) {
                 const now = new Date();
+                const diff = state.prayerInstance.nextTime - now;
                 
-                if(next !== 'none') {
-                    const time = state.prayerInstance.timeForPrayer(next);
-                    const diff = time - now;
+                if (diff > 0) {
                     const h = Math.floor(diff / 3600000);
                     const m = Math.floor((diff % 3600000) / 60000);
                     const s = Math.floor((diff % 60000) / 1000);
                     
-                    const names = {fajr:'الصبح', dhuhr:'الظهر', asr:'العصر', maghrib:'المغرب', isha:'العشاء'};
-                    document.getElementById('nextPrayerName').innerText = names[next];
+                    document.getElementById('nextPrayerName').innerText = state.prayerInstance.names[state.prayerInstance.next];
                     document.getElementById('nextPrayerCounter').innerText = `-${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
                 } else {
-                    document.getElementById('nextPrayerName').innerText = 'تمت الصلوات';
-                    document.getElementById('nextPrayerCounter').innerText = '--:--';
+                    // Trigger refresh if time passed
+                    refreshTools(); 
                 }
-            }
-
-            // Ramadan Countdown (Estimate: Assuming around Feb 28 2025 or similar for next years, logic needs dynamic library but we simulate)
-            // Simplified logic: Ramadan 2026 is approx Feb 17.
-            const ramadanDate = new Date('2026-02-17T00:00:00'); 
-            const diffRamadan = ramadanDate - new Date();
-            if (diffRamadan > 0) {
-                const days = Math.floor(diffRamadan / (1000 * 60 * 60 * 24));
-                document.getElementById('ramadanCounter').innerText = `${days} يوم متبقي`;
-            } else {
-                 document.getElementById('ramadanCounter').innerText = `رمضان كريم`;
             }
         }
 
         // --- Helper Logic ---
         function updateUI() {
-            document.getElementById('locationDisplay').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${state.city}`;
+            document.getElementById('headerCity').innerText = state.city;
             document.getElementById('weatherCity').innerText = state.city;
         }
 
@@ -573,9 +610,9 @@
         document.getElementById('exchangeRate').addEventListener('input', calcCurrency);
         document.getElementById('currType').addEventListener('change', calcCurrency);
 
-        function toggleCCP() {
-             document.getElementById('ccpTool').classList.toggle('hidden');
-        }
+        function toggleCCP() { document.getElementById('ccpTool').classList.toggle('hidden'); }
+        function toggleGrade() { alert("قريباً: حاسبة المعدل الفصلي"); }
+        
         function calcKey() {
             const num = document.getElementById('ccpInput').value;
             if(num) {
@@ -601,47 +638,37 @@
         function speak(text) {
             if(!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
-            
-            // Clean text from Markdown
             const cleanText = text.replace(/[*#_`]/g, '');
             const utter = new SpeechSynthesisUtterance(cleanText);
-            
-            // Try to find Arabic voice
             const voices = window.speechSynthesis.getVoices();
             const arVoice = voices.find(v => v.lang.includes('ar'));
             if(arVoice) utter.voice = arVoice;
-            
             utter.rate = 1.1;
             window.speechSynthesis.speak(utter);
         }
 
         function toggleVoice() {
-            // STT (Speech to Text)
             const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if(!Recognition) return alert("المتصفح لا يدعم هذا");
-            
             const rec = new Recognition();
             rec.lang = 'ar-DZ';
             rec.start();
-            
             const btn = document.getElementById('micBtn');
             btn.classList.add('text-red-500', 'animate-pulse');
-            
             rec.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById('msgInput').value += transcript;
+                document.getElementById('msgInput').value += event.results[0][0].transcript;
                 btn.classList.remove('text-red-500', 'animate-pulse');
             };
             rec.onerror = () => btn.classList.remove('text-red-500', 'animate-pulse');
             rec.onend = () => btn.classList.remove('text-red-500', 'animate-pulse');
         }
 
-        // --- Utility Functions ---
+        // --- Utility ---
         function nav(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('view-'+pageId).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
         }
 
         function finishOnboarding() {
@@ -652,6 +679,7 @@
                 localStorage.setItem('dza_provider', p);
                 document.getElementById('welcomeModal').classList.add('hidden');
                 loadState();
+                setTimeout(refreshTools, 500);
             } else alert("يرجى إدخال المفتاح");
         }
 
@@ -673,47 +701,20 @@
             });
             btn.classList.add('active', 'border-green-500', 'text-green-400');
             btn.classList.remove('text-gray-400');
-            
-            // Add system notification
-            state.chatHistory = []; // Reset context on personality switch to avoid confusion
+            state.chatHistory = []; 
             renderChat();
             addMessage('system', `تم تغيير الشخصية إلى: ${CONFIG.modes[mode].name}`);
         }
 
-        function clearChat() {
-            if(confirm("مسح المحادثة؟")) {
-                state.chatHistory = [];
-                localStorage.removeItem('dza_history');
-                renderChat();
-            }
-        }
-
-        function fullReset() {
-            if(confirm("سيتم حذف كل البيانات وإعادة التطبيق للصفر. متأكد؟")) {
-                localStorage.clear();
-                location.reload();
-            }
-        }
-
-        function exportChatPDF() {
-            const el = document.getElementById('chatContainer');
-            html2pdf().set({ margin: 10, filename: 'Dza-Chat.pdf', backgroundColor: '#1e293b' }).from(el).save();
-        }
-
-        function setInput(txt) {
-            document.getElementById('msgInput').value = txt;
-            sendMessage();
-        }
-        
+        function clearChat() { if(confirm("مسح المحادثة؟")) { state.chatHistory = []; localStorage.removeItem('dza_history'); renderChat(); } }
+        function fullReset() { if(confirm("سيتم حذف كل البيانات؟")) { localStorage.clear(); location.reload(); } }
+        function exportChatPDF() { const el = document.getElementById('chatContainer'); html2pdf().set({ margin: 10, filename: 'Dza-Chat.pdf', backgroundColor: '#1e293b' }).from(el).save(); }
+        function setInput(txt) { document.getElementById('msgInput').value = txt; sendMessage(); }
         function copyCode(icon) {
             const code = icon.parentElement.nextElementSibling.innerText;
             navigator.clipboard.writeText(code);
-            icon.classList.remove('fa-copy');
-            icon.classList.add('fa-check', 'text-green-500');
-            setTimeout(() => {
-                icon.classList.remove('fa-check', 'text-green-500');
-                icon.classList.add('fa-copy');
-            }, 2000);
+            icon.classList.remove('fa-copy'); icon.classList.add('fa-check', 'text-green-500');
+            setTimeout(() => { icon.classList.remove('fa-check', 'text-green-500'); icon.classList.add('fa-copy'); }, 2000);
         }
     </script>
 </body>

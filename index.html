@@ -7,7 +7,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f172a">
-    <title>Dza-Genius V11 Ultra</title>
+    <title>Dza-Genius V12 Ultra</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -15,7 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
 
@@ -24,10 +23,10 @@
         body { font-family: 'Cairo', sans-serif; background: var(--bg-dark); color: #f8fafc; height: 100dvh; overflow: hidden; background-image: radial-gradient(#1e293b 1px, transparent 1px); background-size: 24px 24px; }
         .app-layout { display: flex; flex-direction: column; height: 100%; padding-top: var(--safe-top); padding-bottom: calc(75px + var(--safe-bottom)); }
         
-        .page { display: none; height: 100%; overflow-y: auto; padding: 16px; scroll-behavior: smooth; }
+        .page { display: none; height: 100%; overflow-y: auto; padding: 16px; scroll-behavior: smooth; padding-bottom: 100px; }
         .page.active { display: block; animation: fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        .msg-bubble { max-width: 90%; padding: 12px 16px; margin-bottom: 12px; border-radius: 18px; position: relative; font-size: 15px; line-height: 1.6; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .msg-bubble { max-width: 90%; padding: 12px 16px; margin-bottom: 12px; border-radius: 18px; position: relative; font-size: 15px; line-height: 1.6; box-shadow: 0 2px 5px rgba(0,0,0,0.1); word-wrap: break-word; }
         .msg-bot { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-bottom-left-radius: 4px; }
         .msg-user { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; margin-right: auto; border-bottom-right-radius: 4px; }
         
@@ -35,40 +34,45 @@
         pre code { font-family: 'Fira Code', monospace; font-size: 13px; display: block; padding: 12px; overflow-x: auto; }
         .code-header { background: #1f2937; padding: 4px 12px; font-size: 11px; color: #9ca3af; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; }
 
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 16px; margin-bottom: 14px; }
-        .glass-card:active { transform: scale(0.99); transition: 0.1s; }
-
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 16px; margin-bottom: 14px; transition: transform 0.2s; }
+        
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: calc(70px + var(--safe-bottom)); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; padding-top: 10px; z-index: 50; }
         .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; width: 20%; transition: 0.3s; cursor: pointer; }
         .nav-item.active { color: var(--primary); transform: translateY(-4px); font-weight: bold; }
         .nav-item i { font-size: 20px; margin-bottom: 4px; }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        /* Typing dot animation */
+        .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <div id="welcomeModal" class="fixed inset-0 z-[100] flex items-center justify-center p-6 hidden bg-black/90 backdrop-blur-md">
-        <div class="glass-card w-full max-w-sm text-center border border-green-500/30 shadow-2xl shadow-green-900/40 relative overflow-hidden">
+        <div class="glass-card w-full max-w-sm text-center border border-green-500/30 shadow-2xl shadow-green-900/40 relative overflow-hidden animate-fadeUp">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-teal-500"></div>
             <div class="w-16 h-16 bg-gradient-to-tr from-green-600 to-teal-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">🇩🇿</div>
-            <h2 class="text-xl font-black mb-1 text-white">Dza-Genius V11</h2>
-            <p class="text-xs text-gray-400 mb-5">الذكاء الاصطناعي الجزائري المتكامل</p>
+            <h2 class="text-xl font-black mb-1 text-white">Dza-Genius V12</h2>
+            <p class="text-xs text-gray-400 mb-5">الرفيق الذكي الجزائري المتكامل</p>
             
             <div class="text-right mb-4 bg-slate-900/80 p-4 rounded-xl border border-slate-700">
-                <label class="text-[10px] text-gray-500 uppercase font-bold block mb-2">المحرك (AI Engine)</label>
+                <label class="text-[10px] text-gray-500 uppercase font-bold block mb-2">اختر المحرك (AI Provider)</label>
                 <select id="welcomeProvider" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-xs mb-3 text-white outline-none">
-                    <option value="groq">Groq (Llama 3 - مجاني وسريع جداً ⚡)</option>
-                    <option value="openai">OpenAI (GPT-4o)</option>
+                    <option value="gemini">Google Gemini (مجاني وقوي جداً 🔥)</option>
+                    <option value="groq">Groq (Llama 3 - سريع)</option>
+                    <option value="openai">OpenAI (GPT-4)</option>
                 </select>
                 
                 <label class="text-[10px] text-gray-500 uppercase font-bold block mb-2">API Key</label>
-                <input type="password" id="welcomeKey" placeholder="sk-..." class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-xs font-mono text-white outline-none focus:border-green-500">
-                <a href="https://console.groq.com/keys" target="_blank" class="text-[10px] text-blue-400 mt-2 block text-center hover:underline">احصل على مفتاح Groq مجاني</a>
+                <input type="password" id="welcomeKey" placeholder="ألصق المفتاح هنا..." class="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-xs font-mono text-white outline-none focus:border-green-500">
+                <div id="keyLinks" class="mt-2 text-center">
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[10px] text-blue-400 block hover:underline">احصل على مفتاح Gemini مجاناً</a>
+                </div>
             </div>
-            <button onclick="finishOnboarding()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl transition shadow-lg text-sm">ابدأ الآن 🚀</button>
+            <button onclick="finishOnboarding()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl transition shadow-lg text-sm">ابدأ المغامرة 🚀</button>
         </div>
     </div>
 
@@ -80,9 +84,9 @@
                     <div class="absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-0.5"><div class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse border border-slate-900"></div></div>
                 </div>
                 <div class="leading-tight">
-                    <h1 class="font-bold text-sm text-white tracking-wide">Dza-Genius <span class="text-[9px] bg-green-900/30 text-green-400 px-1 rounded border border-green-500/20">ULTRA</span></h1>
-                    <div class="text-[10px] text-gray-400 cursor-pointer flex items-center gap-1 hover:text-green-300 transition" onclick="nav('tools', this)">
-                        <i class="fa-solid fa-location-dot"></i> <span id="headerCity">الجزائر العاصمة</span>
+                    <h1 class="font-bold text-sm text-white tracking-wide">Dza-Genius <span class="text-[9px] bg-green-900/30 text-green-400 px-1 rounded border border-green-500/20">V12</span></h1>
+                    <div class="text-[10px] text-gray-400 cursor-pointer flex items-center gap-1 hover:text-green-300 transition" onclick="nav('tools', document.querySelector('.nav-item:nth-child(2)'))">
+                        <i class="fa-solid fa-location-dot"></i> <span id="headerCity">جاري التحديد...</span>
                     </div>
                 </div>
             </div>
@@ -97,13 +101,14 @@
         </header>
 
         <main id="view-chat" class="page active">
-            <div id="chatContainer" class="pb-28 min-h-[60vh] flex flex-col justify-end"></div>
+            <div id="chatContainer" class="min-h-[60vh] flex flex-col justify-end"></div>
             
             <div class="fixed bottom-[calc(70px+var(--safe-bottom))] left-0 right-0 px-3 py-2 z-40 bg-gradient-to-t from-slate-900 via-slate-900/95 to-transparent">
                 <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-1 px-1" id="quickSuggestions">
-                    <button onclick="setInput('واش هو سعر الأورو اليوم؟')" class="whitespace-nowrap bg-slate-800/80 border border-slate-700 text-[10px] text-gray-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">💶 سعر الأورو</button>
-                    <button onclick="setInput('أكتب لي دوموند خطية')" class="whitespace-nowrap bg-slate-800/80 border border-slate-700 text-[10px] text-gray-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">📝 طلب خطي</button>
-                    <button onclick="setInput('نكتة جزائرية')" class="whitespace-nowrap bg-slate-800/80 border border-slate-700 text-[10px] text-gray-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">😂 نكتة</button>
+                    <button onclick="setInput('واش هو سعر الأورو اليوم في السكوار؟')" class="whitespace-nowrap bg-slate-800/80 border border-slate-700 text-[10px] text-gray-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">💶 سعر الأورو</button>
+                    <button onclick="setInput('أكتب لي دوموند خطية باش نشارك في مسابقة توظيف')" class="whitespace-nowrap bg-slate-800/80 border border-slate-700 text-[10px] text-gray-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">📝 طلب خطي</button>
+                    <button onclick="setInput('أعطيني نكتة جزائرية تضحك')" class="whitespace-nowrap bg-slate-800/80 border border-slate-700 text-[10px] text-gray-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">😂 نكتة</button>
+                    <button onclick="setInput('وصفة شطيطحة دجاج سهلة')" class="whitespace-nowrap bg-slate-800/80 border border-slate-700 text-[10px] text-gray-300 px-3 py-1.5 rounded-full hover:bg-slate-700 transition">🥘 وصفة طبخ</button>
                 </div>
 
                 <div class="max-w-3xl mx-auto flex items-end gap-2 bg-slate-800/90 backdrop-blur p-1.5 rounded-[24px] border border-slate-700 shadow-2xl">
@@ -121,7 +126,7 @@
         <main id="view-tools" class="page">
             <div class="glass-card p-3 flex gap-2 items-center mb-4 border-blue-500/30 bg-blue-900/10">
                 <i class="fa-solid fa-map-location-dot text-blue-400"></i>
-                <select id="wilayaSelect" onchange="changeWilaya()" class="bg-transparent w-full text-sm text-white font-bold outline-none">
+                <select id="wilayaSelect" onchange="changeWilaya()" class="bg-transparent w-full text-sm text-white font-bold outline-none cursor-pointer">
                     <option value="auto">📍 تحديد تلقائي (GPS)</option>
                     </select>
             </div>
@@ -162,8 +167,7 @@
                     <h3 class="text-xs font-bold text-gray-300"><i class="fa-regular fa-clock"></i> المواقيت</h3>
                     <span id="hijriDate" class="text-[10px] text-gray-500 font-mono">--/--/14--</span>
                 </div>
-                <div id="prayerList" class="grid grid-cols-5 gap-1 text-center">
-                    </div>
+                <div id="prayerList" class="grid grid-cols-5 gap-1 text-center"></div>
             </div>
 
             <div class="glass-card border-yellow-500/30">
@@ -172,7 +176,7 @@
                     <i class="fa-solid fa-rotate cursor-pointer hover:rotate-180 transition" onclick="calcCurrency()"></i>
                 </h3>
                 <div class="flex gap-2 items-center mb-2">
-                    <input type="number" id="currAmount" value="100" class="w-1/3 bg-slate-800 border border-slate-600 rounded p-2 text-center text-sm font-bold">
+                    <input type="number" id="currAmount" value="100" class="w-1/3 bg-slate-800 border border-slate-600 rounded p-2 text-center text-sm font-bold text-white">
                     <select id="currType" class="bg-slate-800 border border-slate-600 rounded p-2 text-xs text-white">
                         <option value="eur">€ أورو</option>
                         <option value="usd">$ دولار</option>
@@ -181,30 +185,43 @@
                     <div id="currResult" class="flex-1 text-left font-mono font-bold text-green-400 text-sm">-- DA</div>
                 </div>
                 <div class="text-[10px] text-gray-500 flex justify-between items-center bg-slate-900/50 p-2 rounded">
-                    <span>سعر الصرف (تقريبي):</span>
-                    <input type="number" id="exchangeRate" value="245" class="w-12 bg-transparent border-b border-gray-600 text-center outline-none text-yellow-200">
+                    <span>سعر الصرف (يدوي):</span>
+                    <input type="number" id="exchangeRate" value="250" class="w-16 bg-transparent border-b border-gray-600 text-center outline-none text-yellow-200">
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-                <div class="glass-card mb-0 hover:bg-slate-800/80 cursor-pointer transition" onclick="toggleCCP()">
+            <div class="grid grid-cols-2 gap-3 pb-8">
+                <div class="glass-card mb-0 hover:bg-slate-800/80 cursor-pointer transition" onclick="toggleTool('ccpTool')">
                     <div class="text-center">
                         <i class="fa-solid fa-credit-card text-2xl text-blue-400 mb-2"></i>
                         <div class="text-xs font-bold">مفتاح CCP</div>
                     </div>
                 </div>
-                <div class="glass-card mb-0 hover:bg-slate-800/80 cursor-pointer transition" onclick="toggleGrade()">
+                <div class="glass-card mb-0 hover:bg-slate-800/80 cursor-pointer transition" onclick="toggleTool('gradeTool')">
                     <div class="text-center">
                         <i class="fa-solid fa-calculator text-2xl text-pink-400 mb-2"></i>
-                        <div class="text-xs font-bold">المعدل</div>
+                        <div class="text-xs font-bold">حاسبة المعدل</div>
                     </div>
                 </div>
             </div>
             
-            <div id="ccpTool" class="glass-card hidden mt-3 bg-blue-900/10 border-blue-500/20">
-                <input type="number" id="ccpInput" placeholder="رقم الحساب (بدون المفتاح)" class="w-full bg-slate-900 p-2 rounded border border-slate-700 text-center mb-2 text-sm">
-                <button onclick="calcKey()" class="w-full bg-blue-600 text-white py-1 rounded text-xs">احسب</button>
-                <div id="ccpRes" class="text-center font-bold text-xl mt-2 text-white"></div>
+            <div id="ccpTool" class="glass-card hidden mt-3 bg-blue-900/10 border-blue-500/20 animate-fadeUp">
+                <h3 class="text-xs font-bold text-blue-400 mb-2">حساب مفتاح البريد (Clé CCP)</h3>
+                <input type="number" id="ccpInput" placeholder="أدخل رقم الحساب (بدون المفتاح)" class="w-full bg-slate-900 p-2 rounded border border-slate-700 text-center mb-2 text-sm text-white">
+                <button onclick="calcKey()" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded text-xs font-bold">احسب المفتاح</button>
+                <div id="ccpRes" class="text-center font-bold text-xl mt-3 text-white"></div>
+            </div>
+
+            <div id="gradeTool" class="glass-card hidden mt-3 bg-pink-900/10 border-pink-500/20 animate-fadeUp">
+                <h3 class="text-xs font-bold text-pink-400 mb-2">حساب المعدل الفصلي</h3>
+                <div id="gradeInputs" class="space-y-2 mb-2">
+                    </div>
+                <div class="flex gap-2 mb-2">
+                    <button onclick="addSubject()" class="w-1/2 bg-slate-700 hover:bg-slate-600 text-white py-1 rounded text-[10px]"><i class="fa-solid fa-plus"></i> إضافة مادة</button>
+                    <button onclick="resetGrade()" class="w-1/2 bg-red-900/50 hover:bg-red-900 text-red-300 py-1 rounded text-[10px]">مسح</button>
+                </div>
+                <button onclick="calcGrade()" class="w-full bg-pink-600 hover:bg-pink-500 text-white py-2 rounded text-xs font-bold">احسب المعدل</button>
+                <div id="gradeRes" class="text-center font-bold text-xl mt-3 text-white"></div>
             </div>
 
         </main>
@@ -213,35 +230,40 @@
             <h2 class="text-lg font-bold mb-4 px-1 text-gray-300">الإعدادات</h2>
             
             <div class="glass-card">
-                <label class="text-xs text-gray-400 font-bold mb-3 block">شخصية البوت</label>
+                <label class="text-xs text-gray-400 font-bold mb-3 block">شخصية المساعد الذكي</label>
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="setMode('darja', this)" class="mode-btn active bg-slate-800 p-3 rounded-xl text-xs border border-green-500 text-green-400">🇩🇿 الدارجة (عام)</button>
-                    <button onclick="setMode('admin', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400">⚖️ بيروقراطي (إداري)</button>
-                    <button onclick="setMode('tech', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400">💻 مبرمج (Dev)</button>
-                    <button onclick="setMode('chef', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400">🍳 شاف طبخ</button>
+                    <button onclick="setMode('darja', this)" class="mode-btn active bg-slate-800 p-3 rounded-xl text-xs border border-green-500 text-green-400 transition">🇩🇿 الدارجة (عام)</button>
+                    <button onclick="setMode('admin', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400 border border-transparent transition">⚖️ بيروقراطي (إداري)</button>
+                    <button onclick="setMode('tech', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400 border border-transparent transition">💻 مبرمج (Dev)</button>
+                    <button onclick="setMode('chef', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400 border border-transparent transition">🍳 شاف طبخ</button>
                 </div>
             </div>
 
             <div class="glass-card">
-                <label class="text-xs text-gray-400 font-bold mb-2 block">بيانات الاتصال</label>
-                <select id="settingProvider" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs mb-2 text-gray-300" onchange="saveConfig()">
+                <label class="text-xs text-gray-400 font-bold mb-2 block">بيانات الاتصال (API)</label>
+                <select id="settingProvider" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs mb-2 text-gray-300 outline-none" onchange="updateKeyLink()">
+                    <option value="gemini">Google Gemini</option>
                     <option value="groq">Groq AI</option>
                     <option value="openai">OpenAI</option>
                 </select>
                 <div class="relative">
-                    <input type="password" id="settingKey" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs font-mono" placeholder="API Key" onchange="saveConfig()">
+                    <input type="password" id="settingKey" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs font-mono text-white outline-none focus:border-green-500 transition" placeholder="API Key">
                     <i class="fa-solid fa-eye absolute left-3 top-2.5 text-gray-500 cursor-pointer text-xs" onclick="toggleKeyVis()"></i>
                 </div>
+                <div id="settingLink" class="mt-2 text-right"></div>
+                <button onclick="saveConfig()" class="w-full mt-3 bg-slate-700 hover:bg-slate-600 text-white py-2 rounded text-xs">حفظ التغييرات</button>
             </div>
 
-            <button onclick="exportChatPDF()" class="w-full glass-card flex items-center justify-between text-xs font-bold text-gray-300 hover:bg-slate-800">
+            <button onclick="exportChatPDF()" class="w-full glass-card flex items-center justify-between text-xs font-bold text-gray-300 hover:bg-slate-800 cursor-pointer transition">
                 <span><i class="fa-solid fa-file-export text-blue-400 ml-2"></i> تحميل المحادثة (PDF)</span>
                 <i class="fa-solid fa-chevron-left text-gray-600"></i>
             </button>
             
-            <button onclick="fullReset()" class="w-full mt-6 py-3 text-red-400 text-xs border border-red-900/50 rounded-xl bg-red-900/10 hover:bg-red-900/20">
-                <i class="fa-solid fa-triangle-exclamation"></i> إعادة ضبط المصنع
+            <button onclick="fullReset()" class="w-full mt-6 py-3 text-red-400 text-xs border border-red-900/50 rounded-xl bg-red-900/10 hover:bg-red-900/20 transition font-bold">
+                <i class="fa-solid fa-triangle-exclamation"></i> إعادة ضبط المصنع (حذف البيانات)
             </button>
+            
+            <p class="text-[10px] text-gray-600 text-center mt-4 font-mono">Dza-Genius V12.0 Ultra Build 2024</p>
         </main>
 
         <nav class="bottom-nav">
@@ -252,26 +274,47 @@
     </div>
 
     <script>
-        // --- Data: Wilayas Coordinates ---
+        // --- Data: Wilayas ---
         const WILAYAS = [
-            {id:1, name:"أدرار", lat:27.8742, lon:-0.2053}, {id:16, name:"الجزائر", lat:36.7528, lon:3.0420},
-            {id:31, name:"وهران", lat:35.6971, lon:-0.6308}, {id:25, name:"قسنطينة", lat:36.3650, lon:6.6147},
-            {id:23, name:"عنابة", lat:36.9000, lon:7.7667}, {id:30, name:"ورقلة", lat:31.9493, lon:5.3250},
-            {id:19, name:"سطيف", lat:36.1898, lon:5.4107}, {id:15, name:"تيزي وزو", lat:36.7118, lon:4.0459},
-            {id:13, name:"تلمسان", lat:34.8783, lon:-1.3150}, {id:5, name:"باتنة", lat:35.5559, lon:6.1741},
-            {id:9, name:"البليدة", lat:36.4715, lon:2.8259}, {id:33, name:"إليزي", lat:26.4893, lon:8.4670},
-            {id:39, name:"الوادي", lat:33.3561, lon:6.8631}, {id:47, name:"غرداية", lat:32.4909, lon:3.6734}
-        ]; // Added common ones to save space, logic supports all if array extended
+            {id:1, name:"أدرار", lat:27.8742, lon:-0.2053}, {id:2, name:"الشلف", lat:36.1652, lon:1.3345},
+            {id:3, name:"الأغواط", lat:33.8000, lon:2.8651}, {id:4, name:"أم البواقي", lat:35.8754, lon:7.1135},
+            {id:5, name:"باتنة", lat:35.5559, lon:6.1741}, {id:6, name:"بجاية", lat:36.7558, lon:5.0843},
+            {id:7, name:"بسكرة", lat:34.8505, lon:5.7280}, {id:8, name:"بشار", lat:31.6166, lon:-2.2199},
+            {id:9, name:"البليدة", lat:36.4715, lon:2.8259}, {id:10, name:"البويرة", lat:36.3748, lon:3.9020},
+            {id:11, name:"تمنراست", lat:22.7850, lon:5.5228}, {id:12, name:"تبسة", lat:35.4041, lon:8.1143},
+            {id:13, name:"تلمسان", lat:34.8783, lon:-1.3150}, {id:14, name:"تيارت", lat:35.3710, lon:1.3169},
+            {id:15, name:"تيزي وزو", lat:36.7118, lon:4.0459}, {id:16, name:"الجزائر", lat:36.7528, lon:3.0420},
+            {id:17, name:"الجلفة", lat:34.6727, lon:3.2630}, {id:18, name:"جيجل", lat:36.8205, lon:5.7667},
+            {id:19, name:"سطيف", lat:36.1898, lon:5.4107}, {id:20, name:"سعيدة", lat:34.8303, lon:0.1517},
+            {id:21, name:"سكيكدة", lat:36.8761, lon:6.9092}, {id:22, name:"سيدي بلعباس", lat:35.1899, lon:-0.6308},
+            {id:23, name:"عنابة", lat:36.9000, lon:7.7667}, {id:24, name:"قالمة", lat:36.4621, lon:7.4260},
+            {id:25, name:"قسنطينة", lat:36.3650, lon:6.6147}, {id:26, name:"المدية", lat:36.2641, lon:2.7539},
+            {id:27, name:"مستغانم", lat:35.9311, lon:0.0891}, {id:28, name:"المسيلة", lat:35.7058, lon:4.5419},
+            {id:29, name:"معسكر", lat:35.3966, lon:0.1402}, {id:30, name:"ورقلة", lat:31.9493, lon:5.3250},
+            {id:31, name:"وهران", lat:35.6971, lon:-0.6308}, {id:32, name:"البيض", lat:33.6802, lon:1.0192},
+            {id:33, name:"إليزي", lat:26.4893, lon:8.4670}, {id:34, name:"برج بوعريريج", lat:36.0707, lon:4.7692},
+            {id:35, name:"بومرداس", lat:36.7597, lon:3.4730}, {id:36, name:"الطارف", lat:36.7672, lon:8.2211},
+            {id:37, name:"تندوف", lat:27.6711, lon:-8.1474}, {id:38, name:"تيسمسيلت", lat:35.6072, lon:1.8109},
+            {id:39, name:"الوادي", lat:33.3561, lon:6.8631}, {id:40, name:"خنشلة", lat:35.4358, lon:7.1433},
+            {id:41, name:"سوق أهراس", lat:36.2863, lon:7.9511}, {id:42, name:"تيبازة", lat:36.5897, lon:2.4475},
+            {id:43, name:"ميلة", lat:36.4502, lon:6.2644}, {id:44, name:"عين الدفلى", lat:36.2619, lon:1.9679},
+            {id:45, name:"النعامة", lat:32.6952, lon:-0.3109}, {id:46, name:"عين تموشنت", lat:35.2974, lon:-1.1403},
+            {id:47, name:"غرداية", lat:32.4909, lon:3.6734}, {id:48, name:"غليزان", lat:35.7373, lon:0.5559}
+        ];
 
         // --- Configuration & State ---
         const CONFIG = {
             modes: {
-                darja: { name: "الدارجة", prompt: "Act as a smart, witty Algerian assistant. Speak in Algerian Darja (Arabic/French mix). Keep answers concise and helpful. Use emojis." },
-                admin: { name: "إداري", prompt: "Act as an expert in Algerian bureaucracy. Write formal letters (Demande, Recours) strictly adhering to Algerian administrative standards. Be formal and precise." },
-                tech: { name: "مبرمج", prompt: "Act as a Senior Developer. Provide code snippets, explain concepts simply. Use markdown for code." },
-                chef: { name: "شاف", prompt: "أنت طباخ جزائري محترف. اقترح وصفات تقليدية وعصرية بمقادير دقيقة." }
+                darja: { name: "الدارجة", prompt: "You are a smart, funny Algerian assistant. Speak in Algerian Darja (mix of Arabic and French). Use Algerian slang (Ya kho, Sahbi, etc.) and Emojis. Be helpful but brief." },
+                admin: { name: "إداري", prompt: "Act as an expert in Algerian Bureaucracy. Write formal requests (Demande manuscrite, Recours, Lettre de motivation) strictly following Algerian administrative standards. Use formal Arabic or French as requested." },
+                tech: { name: "مبرمج", prompt: "You are a Senior Software Engineer. Provide clean, efficient code. Explain concepts simply. Use Markdown for code blocks." },
+                chef: { name: "شاف", prompt: "أنت طباخ جزائري محترف. اقترح وصفات تقليدية وعصرية بمقادير دقيقة جداً مع طريقة التحضير." }
             },
-            models: { groq: 'llama-3.3-70b-versatile', openai: 'gpt-4o' }
+            models: { 
+                gemini: 'gemini-1.5-flash',
+                groq: 'llama-3.3-70b-versatile', 
+                openai: 'gpt-4o-mini' 
+            }
         };
 
         let state = {
@@ -279,25 +322,31 @@
             chatHistory: [],
             mode: 'darja',
             voiceEnabled: false,
-            nextPrayerTime: null,
-            prayerInstance: null
+            prayerInstance: null,
+            subjects: [] // For Grade Calculator
         };
 
         // --- Initialization ---
         window.onload = () => {
-            loadState();
             initWilayaSelect();
+            loadState();
+            addSubject(); // Add one subject field by default
             
+            // Highlight setup
+            hljs.highlightAll();
+
             if (!localStorage.getItem('dza_key')) {
                 document.getElementById('welcomeModal').classList.remove('hidden');
+                updateKeyLink();
             } else {
                 renderChat();
-                // Ensure Adhan library is loaded
-                setTimeout(refreshTools, 500); 
+                // Delay tools refresh to ensure libraries load
+                setTimeout(() => { refreshTools(); updateTimers(); }, 1000); 
             }
-            // Auto-refresh widgets
+            
             setInterval(updateTimers, 1000);
             
+            // Setup Marked
             marked.setOptions({
                 highlight: function(code, lang) {
                     const language = highlight.getLanguage(lang) ? lang : 'plaintext';
@@ -312,13 +361,9 @@
                 const opt = document.createElement('option');
                 opt.value = w.id;
                 opt.innerText = `${w.id}. ${w.name}`;
+                opt.className = "text-black";
                 sel.appendChild(opt);
             });
-            // Add remaining generic option
-            const other = document.createElement('option');
-            other.innerText = "باقي الولايات (قريباً)";
-            other.disabled = true;
-            sel.appendChild(other);
         }
 
         function loadState() {
@@ -338,7 +383,8 @@
             const key = localStorage.getItem('dza_key');
             if(key) {
                 document.getElementById('settingKey').value = key;
-                document.getElementById('settingProvider').value = localStorage.getItem('dza_provider') || 'groq';
+                document.getElementById('settingProvider').value = localStorage.getItem('dza_provider') || 'gemini';
+                updateKeyLink();
             }
             updateUI();
         }
@@ -371,54 +417,88 @@
             addMessage('user', text);
 
             const apiKey = localStorage.getItem('dza_key');
-            const provider = localStorage.getItem('dza_provider') || 'groq';
+            const provider = localStorage.getItem('dza_provider') || 'gemini';
             const loaderId = addLoader();
 
             try {
-                const systemMsg = {
-                    role: "system", 
-                    content: `${CONFIG.modes[state.mode].prompt}. Current Context: Location=${state.city}, Time=${new Date().toLocaleString('fr-DZ')}.`
-                };
+                let reply = "";
                 
-                const apiMessages = [systemMsg, ...state.chatHistory.slice(-10)];
+                // --- GEMINI API ---
+                if (provider === 'gemini') {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.models.gemini}:generateContent?key=${apiKey}`;
+                    
+                    const systemPrompt = CONFIG.modes[state.mode].prompt + ` Current Context: Location=${state.city}, Time=${new Date().toLocaleString('fr-DZ')}.`;
+                    
+                    // Format history for Gemini
+                    const history = state.chatHistory.slice(-5).map(msg => ({
+                        role: msg.role === 'user' ? 'user' : 'model',
+                        parts: [{ text: msg.content }]
+                    }));
 
-                const endpoint = provider === 'groq' 
-                    ? 'https://api.groq.com/openai/v1/chat/completions' 
-                    : 'https://api.openai.com/v1/chat/completions';
+                    const payload = {
+                        contents: [
+                            { role: 'user', parts: [{ text: systemPrompt }] }, // Inject system as first user prompt for context
+                            ...history,
+                            { role: 'user', parts: [{ text: text }] }
+                        ]
+                    };
 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: CONFIG.models[provider],
-                        messages: apiMessages,
-                        temperature: 0.7,
-                        max_tokens: 1000
-                    })
-                });
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const data = await response.json();
+                    if(data.error) throw new Error(data.error.message);
+                    reply = data.candidates[0].content.parts[0].text;
 
-                const data = await response.json();
+                } 
+                // --- OPENAI / GROQ API ---
+                else {
+                    const systemMsg = {
+                        role: "system", 
+                        content: `${CONFIG.modes[state.mode].prompt}. Current Context: Location=${state.city}, Time=${new Date().toLocaleString('fr-DZ')}.`
+                    };
+                    
+                    const apiMessages = [systemMsg, ...state.chatHistory.slice(-6), {role: "user", content: text}];
+                    const endpoint = provider === 'groq' 
+                        ? 'https://api.groq.com/openai/v1/chat/completions' 
+                        : 'https://api.openai.com/v1/chat/completions';
+
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: CONFIG.models[provider],
+                            messages: apiMessages,
+                            temperature: 0.7
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error.message || "API Error");
+                    reply = data.choices[0].message.content;
+                }
+
                 removeLoader(loaderId);
-
-                if (data.error) throw new Error(data.error.message || "API Error");
-                
-                const reply = data.choices[0].message.content;
                 addMessage('assistant', reply);
-                
                 if (state.voiceEnabled) speak(reply);
 
             } catch (error) {
                 removeLoader(loaderId);
-                addMessage('system', `خطأ في الاتصال: ${error.message}`);
+                addMessage('system', `خطأ: ${error.message}. تأكد من المفتاح (API Key)`);
             }
         }
 
         function addMessage(role, content) {
             if(role !== 'system') {
                 state.chatHistory.push({ role, content });
+                // Keep history manageable (last 20 msgs)
+                if(state.chatHistory.length > 20) state.chatHistory.shift();
                 localStorage.setItem('dza_history', JSON.stringify(state.chatHistory));
             }
 
@@ -426,19 +506,24 @@
             const div = document.createElement('div');
             
             if (role === 'system') {
-                div.className = 'text-center text-[10px] text-red-400 my-2';
+                div.className = 'text-center text-[10px] text-red-400 my-2 px-4';
                 div.innerText = content;
             } else {
                 div.className = `msg-bubble ${role === 'user' ? 'msg-user' : 'msg-bot'}`;
                 if (role === 'assistant') {
+                    // Safe markdown rendering
                     div.innerHTML = marked.parse(content);
+                    
+                    // Process Code Blocks
                     div.querySelectorAll('pre code').forEach((block) => {
                         hljs.highlightElement(block);
                         const pre = block.parentElement;
-                        const lang = block.className.replace('language-', '') || 'Code';
+                        const lang = block.className.replace('language-', '') || 'code';
+                        
+                        // Add Header
                         const header = document.createElement('div');
                         header.className = 'code-header';
-                        header.innerHTML = `<span>${lang}</span><i class="fa-regular fa-copy cursor-pointer" onclick="copyCode(this)"></i>`;
+                        header.innerHTML = `<span>${lang}</span><i class="fa-regular fa-copy cursor-pointer hover:text-white" onclick="copyCode(this)"></i>`;
                         pre.insertBefore(header, block);
                     });
                 } else {
@@ -446,7 +531,9 @@
                 }
             }
             container.appendChild(div);
-            window.scrollTo(0, document.body.scrollHeight);
+            // Scroll to bottom
+            const main = document.getElementById('view-chat');
+            main.scrollTo(0, main.scrollHeight);
             div.scrollIntoView({ behavior: "smooth", block: "end" });
         }
 
@@ -454,7 +541,7 @@
             const container = document.getElementById('chatContainer');
             container.innerHTML = '';
             if (state.chatHistory.length === 0) {
-                container.innerHTML = `<div class="msg-bubble msg-bot">مرحباً! أنا Dza-Genius 👋<br>واش راك حاب تدير اليوم؟</div>`;
+                container.innerHTML = `<div class="msg-bubble msg-bot">مرحباً! أنا Dza-Genius V12 👋<br>المساعد الذكي الخاص بك. واش نقدر نعاونك اليوم؟</div>`;
                 return;
             }
             state.chatHistory.forEach(msg => {
@@ -468,7 +555,21 @@
                 container.appendChild(div);
             });
             document.querySelectorAll('pre code').forEach(hljs.highlightElement);
-            window.scrollTo(0, document.body.scrollHeight);
+            // Re-add headers to code blocks
+             document.querySelectorAll('pre').forEach((pre) => {
+                if(!pre.querySelector('.code-header')) {
+                    const block = pre.querySelector('code');
+                    if(block) {
+                         const lang = block.className.replace('language-', '') || 'code';
+                         const header = document.createElement('div');
+                         header.className = 'code-header';
+                         header.innerHTML = `<span>${lang}</span><i class="fa-regular fa-copy cursor-pointer hover:text-white" onclick="copyCode(this)"></i>`;
+                         pre.insertBefore(header, block);
+                    }
+                }
+            });
+            const main = document.getElementById('view-chat');
+            main.scrollTop = main.scrollHeight;
         }
 
         function addLoader() {
@@ -476,7 +577,7 @@
             const div = document.createElement('div');
             div.id = id;
             div.className = 'msg-bubble msg-bot w-16';
-            div.innerHTML = `<div class="flex gap-1 justify-center"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></div></div>`;
+            div.innerHTML = `<div class="flex gap-1 justify-center py-1"><div class="w-2 h-2 bg-gray-400 rounded-full typing-dot"></div><div class="w-2 h-2 bg-gray-400 rounded-full typing-dot"></div><div class="w-2 h-2 bg-gray-400 rounded-full typing-dot"></div></div>`;
             document.getElementById('chatContainer').appendChild(div);
             div.scrollIntoView();
             return id;
@@ -484,15 +585,11 @@
         function removeLoader(id) { const el = document.getElementById(id); if(el) el.remove(); }
 
         // --- Tools & Widgets ---
-        
         function getUserLocation() {
             const label = document.getElementById('headerCity');
             label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
             
-            if(!navigator.geolocation) {
-                alert("المتصفح لا يدعم تحديد الموقع");
-                return;
-            }
+            if(!navigator.geolocation) return alert("المتصفح لا يدعم تحديد الموقع");
 
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 state.lat = pos.coords.latitude;
@@ -509,7 +606,7 @@
                 refreshTools();
             }, (err) => {
                 label.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-red-400"></i>';
-                alert("تعذر تحديد الموقع. يرجى اختيار الولاية يدوياً.");
+                alert("تعذر تحديد الموقع. يرجى اختيار الولاية يدوياً من الأدوات.");
             });
         }
 
@@ -520,11 +617,11 @@
                 const wData = await wRes.json();
                 document.getElementById('weatherTemp').innerText = `${Math.round(wData.current_weather.temperature)}°`;
                 document.getElementById('windSpeed').innerText = wData.current_weather.windspeed;
-                const codes = {0:'صافي', 1:'غائم جزئي', 2:'غائم', 3:'غائم', 61:'مطر', 63:'مطر', 80:'زخات'};
+                const codes = {0:'صافي', 1:'غائم جزئي', 2:'غائم', 3:'غائم', 61:'مطر', 63:'مطر', 80:'زخات', 95:'رعد'};
                 document.getElementById('weatherDesc').innerText = codes[wData.current_weather.weathercode] || 'متغير';
-            } catch(e) {}
+            } catch(e) { console.log('Weather Err', e); }
 
-            // Prayers Logic Fixed
+            // Prayer Times
             if (typeof adhan !== 'undefined') {
                 const coords = new adhan.Coordinates(state.lat, state.lon);
                 const params = adhan.CalculationMethod.MuslimWorldLeague();
@@ -533,10 +630,10 @@
                 const date = new Date();
                 let prayerTimes = new adhan.PrayerTimes(coords, date, params);
                 
-                // Qibla Direction
+                // Qibla
                 const qibla = adhan.Qibla(coords);
                 document.getElementById('qiblaDegree').innerText = Math.round(qibla) + "°";
-                document.getElementById('qiblaArrow').style.transform = `rotate(${qibla - 180}deg)`; // Adjust based on icon
+                document.getElementById('qiblaArrow').style.transform = `rotate(${qibla - 180}deg)`;
 
                 const fmt = t => t.toLocaleTimeString('fr-DZ', {hour:'2-digit', minute:'2-digit'});
                 const names = {fajr:'الصبح', dhuhr:'الظهر', asr:'العصر', maghrib:'المغرب', isha:'العشاء'};
@@ -553,12 +650,12 @@
 
                 document.getElementById('hijriDate').innerText = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(date);
 
-                // Handle Next Prayer Logic
+                // Next Prayer Logic (Robust)
                 let next = prayerTimes.nextPrayer();
                 let nextTime = null;
 
                 if(next === 'none') {
-                    // Next prayer is tomorrow's Fajr
+                    // It's after Isha, so next is tomorrow's Fajr
                     const tomorrow = new Date();
                     tomorrow.setDate(tomorrow.getDate() + 1);
                     const pTomorrow = new adhan.PrayerTimes(coords, tomorrow, params);
@@ -567,13 +664,12 @@
                 } else {
                     nextTime = prayerTimes.timeForPrayer(next);
                 }
-
                 state.prayerInstance = { next, nextTime, names };
+                updateTimers(); // Immediate update
             }
         }
 
         function updateTimers() {
-            // Prayer Countdown Fixed
             if(state.prayerInstance && state.prayerInstance.nextTime) {
                 const now = new Date();
                 const diff = state.prayerInstance.nextTime - now;
@@ -586,13 +682,12 @@
                     document.getElementById('nextPrayerName').innerText = state.prayerInstance.names[state.prayerInstance.next];
                     document.getElementById('nextPrayerCounter').innerText = `-${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
                 } else {
-                    // Trigger refresh if time passed
                     refreshTools(); 
                 }
             }
         }
 
-        // --- Helper Logic ---
+        // --- Logic: Currency, CCP, Grade ---
         function updateUI() {
             document.getElementById('headerCity').innerText = state.city;
             document.getElementById('weatherCity').innerText = state.city;
@@ -610,14 +705,58 @@
         document.getElementById('exchangeRate').addEventListener('input', calcCurrency);
         document.getElementById('currType').addEventListener('change', calcCurrency);
 
-        function toggleCCP() { document.getElementById('ccpTool').classList.toggle('hidden'); }
-        function toggleGrade() { alert("قريباً: حاسبة المعدل الفصلي"); }
+        function toggleTool(id) { 
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
         
         function calcKey() {
             const num = document.getElementById('ccpInput').value;
             if(num) {
                 const key = 97n - ((BigInt(num) * 100n) % 97n);
-                document.getElementById('ccpRes').innerText = `Clé: ${key.toString().padStart(2, '0')}`;
+                document.getElementById('ccpRes').innerText = `المفتاح: ${key.toString().padStart(2, '0')}`;
+            }
+        }
+
+        // Grade Calculator Logic
+        function addSubject() {
+            const container = document.getElementById('gradeInputs');
+            const div = document.createElement('div');
+            div.className = "flex gap-2";
+            div.innerHTML = `
+                <input type="number" placeholder="العلامة /20" class="grade-mark w-2/3 bg-slate-900 border border-slate-700 rounded p-2 text-xs text-white outline-none">
+                <input type="number" placeholder="المعامل" value="1" class="grade-coef w-1/3 bg-slate-900 border border-slate-700 rounded p-2 text-xs text-center text-white outline-none">
+            `;
+            container.appendChild(div);
+        }
+
+        function resetGrade() {
+            document.getElementById('gradeInputs').innerHTML = '';
+            document.getElementById('gradeRes').innerText = '';
+            addSubject();
+        }
+
+        function calcGrade() {
+            const marks = document.querySelectorAll('.grade-mark');
+            const coefs = document.querySelectorAll('.grade-coef');
+            let totalScore = 0;
+            let totalCoef = 0;
+
+            marks.forEach((markInput, index) => {
+                const m = parseFloat(markInput.value);
+                const c = parseFloat(coefs[index].value);
+                if(!isNaN(m) && !isNaN(c)) {
+                    totalScore += (m * c);
+                    totalCoef += c;
+                }
+            });
+
+            if(totalCoef > 0) {
+                const avg = totalScore / totalCoef;
+                const el = document.getElementById('gradeRes');
+                el.innerText = avg.toFixed(2);
+                if(avg >= 10) el.className = "text-center font-bold text-2xl mt-3 text-green-400";
+                else el.className = "text-center font-bold text-2xl mt-3 text-red-400";
             }
         }
 
@@ -626,10 +765,10 @@
             state.voiceEnabled = !state.voiceEnabled;
             const btn = document.getElementById('soundBtn');
             if(state.voiceEnabled) {
-                btn.classList.add('text-green-400');
+                btn.classList.add('text-green-400', 'border-green-500/50');
                 btn.innerHTML = '<i class="fa-solid fa-volume-high text-xs"></i>';
             } else {
-                btn.classList.remove('text-green-400');
+                btn.classList.remove('text-green-400', 'border-green-500/50');
                 btn.innerHTML = '<i class="fa-solid fa-volume-xmark text-xs"></i>';
                 window.speechSynthesis.cancel();
             }
@@ -638,9 +777,12 @@
         function speak(text) {
             if(!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
-            const cleanText = text.replace(/[*#_`]/g, '');
+            // Remove code blocks and Markdown for speech
+            const cleanText = text.replace(/```[\s\S]*?```/g, 'كود برمجي').replace(/[*#_`]/g, '');
+            
             const utter = new SpeechSynthesisUtterance(cleanText);
             const voices = window.speechSynthesis.getVoices();
+            // Try to find Arabic voice
             const arVoice = voices.find(v => v.lang.includes('ar'));
             if(arVoice) utter.voice = arVoice;
             utter.rate = 1.1;
@@ -649,16 +791,21 @@
 
         function toggleVoice() {
             const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if(!Recognition) return alert("المتصفح لا يدعم هذا");
+            if(!Recognition) return alert("المتصفح لا يدعم الإدخال الصوتي");
+            
             const rec = new Recognition();
-            rec.lang = 'ar-DZ';
+            rec.lang = 'ar-DZ'; // Try Algerian Arabic
             rec.start();
+            
             const btn = document.getElementById('micBtn');
             btn.classList.add('text-red-500', 'animate-pulse');
+            
             rec.onresult = (event) => {
-                document.getElementById('msgInput').value += event.results[0][0].transcript;
+                document.getElementById('msgInput').value += " " + event.results[0][0].transcript;
                 btn.classList.remove('text-red-500', 'animate-pulse');
+                document.getElementById('msgInput').style.height = 'auto';
             };
+            
             rec.onerror = () => btn.classList.remove('text-red-500', 'animate-pulse');
             rec.onend = () => btn.classList.remove('text-red-500', 'animate-pulse');
         }
@@ -672,7 +819,7 @@
         }
 
         function finishOnboarding() {
-            const k = document.getElementById('welcomeKey').value;
+            const k = document.getElementById('welcomeKey').value.trim();
             const p = document.getElementById('welcomeProvider').value;
             if(k) {
                 localStorage.setItem('dza_key', k);
@@ -684,13 +831,24 @@
         }
 
         function saveConfig() {
-            localStorage.setItem('dza_key', document.getElementById('settingKey').value);
+            const k = document.getElementById('settingKey').value.trim();
+            if(k) localStorage.setItem('dza_key', k);
             localStorage.setItem('dza_provider', document.getElementById('settingProvider').value);
+            alert("تم حفظ الإعدادات بنجاح ✅");
+            location.reload(); // Reload to apply changes cleanly
         }
 
         function toggleKeyVis() {
             const inp = document.getElementById('settingKey');
             inp.type = inp.type === 'password' ? 'text' : 'password';
+        }
+
+        function updateKeyLink() {
+            const p = document.getElementById('settingProvider').value;
+            const l = document.getElementById('settingLink');
+            if(p === 'gemini') l.innerHTML = '<a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-400 text-[10px] hover:underline">رابط مفتاح Gemini</a>';
+            else if(p === 'groq') l.innerHTML = '<a href="https://console.groq.com/keys" target="_blank" class="text-blue-400 text-[10px] hover:underline">رابط مفتاح Groq</a>';
+            else l.innerHTML = '<a href="https://platform.openai.com/api-keys" target="_blank" class="text-blue-400 text-[10px] hover:underline">رابط مفتاح OpenAI</a>';
         }
 
         function setMode(mode, btn) {

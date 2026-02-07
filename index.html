@@ -311,10 +311,11 @@
                 chef: { name: "شاف", prompt: "أنت طباخ جزائري محترف. اقترح وصفات تقليدية وعصرية بمقادير دقيقة جداً مع طريقة التحضير." }
             },
             models: { 
-                gemini: 'gemini-1.5-flash',
-                groq: 'llama-3.3-70b-versatile', 
-                openai: 'gpt-4o-mini' 
-            }
+    gemini: 'gemini-1.5-flash-latest', // أو استخدم 'gemini-pro' إذا لم يعمل هذا
+    groq: 'llama-3.3-70b-versatile', 
+    openai: 'gpt-4o-mini' 
+}
+
         };
 
         let state = {

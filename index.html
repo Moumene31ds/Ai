@@ -31,7 +31,7 @@
         .msg-bubble { max-width: 90%; padding: 12px 16px; margin-bottom: 12px; border-radius: 18px; position: relative; font-size: 15px; line-height: 1.6; box-shadow: 0 2px 5px rgba(0,0,0,0.1); word-wrap: break-word; }
         .msg-bot { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-bottom-left-radius: 4px; }
         .msg-user { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; margin-right: auto; border-bottom-right-radius: 4px; }
-        .msg-vip { background: linear-gradient(135deg, #382803 0%, #422006 100%); border: 1px solid #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.1); }
+        .msg-vip { background: linear-gradient(135deg, #2a2008 0%, #422006 100%); border: 1px solid #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.15); }
 
         /* Code Blocks */
         pre { background: #111827 !important; padding: 0 !important; border-radius: 8px !important; overflow: hidden; margin: 10px 0; border: 1px solid #374151; direction: ltr; position: relative; }
@@ -40,64 +40,107 @@
         .copy-btn:hover { background: rgba(255,255,255,0.2); }
 
         /* Components */
-        .glass-card { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 16px; margin-bottom: 14px; }
+        .glass-card { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 16px; margin-bottom: 14px; position: relative; overflow: hidden; }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: calc(70px + var(--safe-bottom)); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-around; padding-top: 10px; z-index: 50; }
         .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #64748b; width: 20%; transition: 0.3s; cursor: pointer; }
         .nav-item.active { color: var(--primary); transform: translateY(-4px); font-weight: bold; }
         
+        /* Premium UI Styles */
+        .premium-bg { background: linear-gradient(180deg, #0f172a 0%, #171002 100%); }
+        .card-pro { background: linear-gradient(145deg, rgba(234, 179, 8, 0.1) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(234, 179, 8, 0.3); transition: transform 0.3s ease; }
+        .card-pro:active { transform: scale(0.98); }
+        .card-ultimate { background: linear-gradient(145deg, rgba(168, 85, 247, 0.15) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(168, 85, 247, 0.4); position: relative; box-shadow: 0 0 20px rgba(168, 85, 247, 0.1); }
+        .shimmer-text { background: linear-gradient(90deg, #fff, #fbbf24, #fff); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 3s linear infinite; }
+        
         /* Animations */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shine { to { background-position: 200% center; } }
         .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-        .vip-glow { animation: goldPulse 2s infinite; }
-        @keyframes goldPulse { 0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); } 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); } }
+        .vip-glow { animation: goldPulse 3s infinite; }
+        @keyframes goldPulse { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
+        .floating { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
     </style>
 </head>
 <body>
 
-    <div id="subModal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 backdrop-blur-sm animate-fadeUp">
-        <div class="glass-card w-full max-w-sm bg-slate-900 border border-yellow-500/50 relative">
-            <button onclick="document.getElementById('subModal').classList.add('hidden')" class="absolute top-2 left-2 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="text-center mb-4">
-                <i class="fa-solid fa-crown text-4xl text-yellow-500 mb-2"></i>
-                <h3 class="text-lg font-bold text-white">ترقية الحساب (VIP)</h3>
-                <p class="text-xs text-gray-400">احصل على ذكاء GPT-4o وسرعة فائقة.</p>
+    <div id="paymentModal" class="fixed inset-0 bg-black/90 z-[70] hidden flex items-end sm:items-center justify-center backdrop-blur-md animate-fadeUp">
+        <div class="bg-slate-900 w-full max-w-md rounded-t-[30px] sm:rounded-[24px] border border-slate-700 p-6 relative shadow-2xl overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl"></div>
+
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-regular fa-credit-card text-yellow-500"></i> بيانات الدفع
+                </h3>
+                <button onclick="togglePaymentModal(false)" class="w-8 h-8 rounded-full bg-slate-800 text-gray-400 flex items-center justify-center hover:bg-slate-700"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="bg-slate-800 p-3 rounded mb-3 border border-slate-700 text-center">
-                <p class="text-xs text-gray-400 mb-1">CCP بريد الجزائر</p>
-                <p class="font-mono text-lg font-bold text-yellow-400 tracking-wider select-all">00000000 00</p>
-                <p class="text-[10px] text-gray-500 mt-1">الاسم: فلان بن فلان</p>
+
+            <div class="space-y-4">
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-2xl border border-slate-700/50 group cursor-pointer relative overflow-hidden" onclick="copyToClipboard('000000000000')">
+                    <div class="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-100 transition"></div>
+                    <div class="flex justify-between items-start mb-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Alg%C3%A9rie_Poste.svg/1200px-Alg%C3%A9rie_Poste.svg.png" class="h-6 opacity-90">
+                        <span class="text-[10px] bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded border border-yellow-500/20">CCP</span>
+                    </div>
+                    <p class="text-[10px] text-gray-400">رقم الحساب البريدي</p>
+                    <div class="flex items-center gap-2">
+                        <p class="text-xl font-mono font-bold text-white tracking-widest mt-1">00000000 00</p>
+                        <i class="fa-regular fa-copy text-gray-500 text-xs"></i>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">الاسم: <span class="text-gray-300 font-bold">محمد بن عبد الله</span></p>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-4 rounded-2xl border border-slate-700/50 group cursor-pointer relative overflow-hidden" onclick="copyToClipboard('00799999000000000000')">
+                    <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition"></div>
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="font-bold text-blue-400 italic">Baridi<span class="text-white">Mob</span></div>
+                        <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded border border-blue-500/20">RIP</span>
+                    </div>
+                    <p class="text-[10px] text-gray-400">التعريف البريدي (RIP)</p>
+                    <div class="flex items-center gap-2">
+                        <p class="text-sm font-mono font-bold text-white tracking-widest mt-1">007 99999 0000000000 00</p>
+                        <i class="fa-regular fa-copy text-gray-500 text-xs"></i>
+                    </div>
+                </div>
             </div>
-            <button class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-2">
-                <i class="fa-brands fa-telegram"></i> إرسال الوصل للتفعيل
-            </button>
+
+            <div class="mt-6">
+                <button class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-blue-900/40 hover:scale-[1.02] transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-telegram text-lg"></i> إرسال الوصل للتفعيل
+                </button>
+                <p class="text-[10px] text-center text-gray-500 mt-3">سيتم تفعيل حسابك في غضون 15 دقيقة</p>
+            </div>
         </div>
     </div>
 
     <div class="app-layout">
         <header class="flex justify-between items-center px-4 py-3 bg-slate-900/90 backdrop-blur sticky top-0 z-40 border-b border-slate-800/60 shadow-md">
             <div class="flex items-center gap-3">
-                <div class="relative cursor-pointer" onclick="nav('settings', document.querySelector('.nav-item:nth-child(3)'))">
-                    <div id="headerAvatar" class="w-9 h-9 rounded-lg bg-gradient-to-br from-green-500 to-teal-700 flex items-center justify-center text-white font-bold text-xs shadow-lg overflow-hidden">
+                <div class="relative cursor-pointer group" onclick="nav('settings', document.querySelector('.nav-item:nth-child(3)'))">
+                    <div id="headerAvatar" class="w-9 h-9 rounded-lg bg-gradient-to-br from-green-500 to-teal-700 flex items-center justify-center text-white font-bold text-xs shadow-lg overflow-hidden border border-slate-700 group-hover:border-green-400 transition">
                         <span>DZ</span>
                     </div>
-                    <div id="headerVipBadge" class="hidden absolute -bottom-1 -right-1 bg-yellow-500 text-black text-[8px] font-bold px-1 rounded-full border border-slate-900 shadow-md">PRO</div>
+                    <div id="headerVipBadge" class="hidden absolute -bottom-1 -right-1 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black text-[8px] font-bold px-1.5 rounded-full border border-slate-900 shadow-md z-10">PRO</div>
                 </div>
                 <div>
-                    <h1 class="font-bold text-sm text-white tracking-wide">Dza-Genius <span id="appVersion" class="text-[9px] bg-slate-800 text-gray-400 px-1 rounded border border-slate-700">V15</span></h1>
+                    <h1 class="font-bold text-sm text-white tracking-wide flex items-center gap-2">
+                        Dza-Genius 
+                        <span onclick="nav('premium')" class="cursor-pointer text-[9px] bg-gradient-to-r from-yellow-600/20 to-yellow-500/10 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/30 hover:bg-yellow-500/20 transition">
+                            <i class="fa-solid fa-crown text-[8px] mr-1"></i>V15
+                        </span>
+                    </h1>
                     <div class="text-[10px] text-gray-400 flex items-center gap-1 cursor-pointer" onclick="getUserLocation()">
                         <i class="fa-solid fa-location-dot text-green-500"></i> <span id="headerCity">الجزائر</span>
                     </div>
                 </div>
             </div>
             <div class="flex gap-2">
-                <button onclick="toggleVoice()" id="voiceToggleBtn" class="w-8 h-8 rounded-full bg-slate-800 text-gray-400 border border-slate-700 flex items-center justify-center hover:bg-slate-700 transition">
-                    <i class="fa-solid fa-volume-xmark text-xs"></i>
-                </button>
-                <button onclick="clearChat()" class="w-8 h-8 rounded-full bg-slate-800 text-red-400 border border-slate-700 flex items-center justify-center hover:bg-red-900/20 transition">
-                    <i class="fa-solid fa-eraser text-xs"></i>
+                <button onclick="nav('premium')" class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-500/20 to-transparent border border-yellow-500/30 text-yellow-400 flex items-center justify-center hover:bg-yellow-500/30 transition animate-pulse">
+                    <i class="fa-solid fa-gem text-xs"></i>
                 </button>
             </div>
         </header>
@@ -139,7 +182,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="grid grid-cols-2 gap-3 mb-4">
                 <div class="glass-card mb-0 p-3 bg-slate-800/50 border-green-500/20">
                     <div class="text-[10px] text-green-400 mb-1 font-bold">الصلاة القادمة</div>
@@ -153,7 +195,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="glass-card border-yellow-500/30">
                 <div class="flex justify-between items-center mb-3">
                     <h3 class="text-xs font-bold text-yellow-500"><i class="fa-solid fa-money-bill-transfer"></i> السكوار (السوق الموازي)</h3>
@@ -172,8 +213,7 @@
                 </div>
                 <div id="rateDisplay" class="text-[9px] text-right text-gray-500 mt-1">سعر الصرف: 1€ = <span id="currentRate">250</span> DA</div>
             </div>
-
-            <div class="glass-card mt-3 bg-slate-800/40 border-slate-700">
+             <div class="glass-card mt-3 bg-slate-800/40 border-slate-700">
                 <h3 class="text-xs font-bold text-blue-400 mb-2 flex items-center gap-2"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Alg%C3%A9rie_Poste.svg/1200px-Alg%C3%A9rie_Poste.svg.png" class="h-3 opacity-80"> أدوات البريد</h3>
                 
                 <div class="flex gap-2 mb-3">
@@ -181,15 +221,86 @@
                     <button onclick="calcKey()" class="w-1/3 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-bold">احسب المفتاح</button>
                 </div>
                 <div id="ccpRes" class="text-center font-bold text-lg text-white min-h-[20px] mb-3"></div>
-                
-                <div class="border-t border-slate-700/50 pt-3">
-                    <p class="text-[10px] text-gray-400 mb-1">كتابة المبلغ بالحروف (للشيك):</p>
-                    <div class="flex gap-2">
-                        <input type="number" id="chequeAmount" placeholder="المبلغ بالدنيار" class="flex-1 bg-slate-900 p-2 rounded border border-slate-600 text-center text-sm text-white outline-none">
-                        <button onclick="convertNumberToWords()" class="bg-slate-700 text-white px-3 rounded hover:bg-slate-600"><i class="fa-solid fa-pen-nib"></i></button>
-                    </div>
-                    <div id="chequeText" class="mt-2 text-xs text-green-300 font-bold bg-slate-900/50 p-2 rounded min-h-[30px] leading-relaxed"></div>
+            </div>
+        </main>
+
+        <main id="view-premium" class="page premium-bg">
+            <div class="text-center pt-4 pb-6 relative">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-yellow-500/20 rounded-full blur-[60px] -z-10"></div>
+                <h2 class="text-2xl font-black text-white mb-1 tracking-tight">ترقية المستوى <i class="fa-solid fa-rocket text-yellow-500"></i></h2>
+                <p class="text-xs text-gray-400 max-w-[250px] mx-auto">اكتشف القدرات الحقيقية للذكاء الاصطناعي مع Dza-Genius Ultimate</p>
+            </div>
+
+            <div class="glass-card bg-slate-800/40 opacity-70 scale-95 mb-4 border-slate-700/50">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="text-sm font-bold text-gray-300">نسخة الزواولة (Free)</div>
+                    <div class="text-lg font-bold text-white font-mono">0 <span class="text-[10px] font-normal text-gray-500">DA</span></div>
                 </div>
+                <ul class="space-y-2 mb-4">
+                    <li class="flex items-center gap-2 text-[11px] text-gray-400"><i class="fa-solid fa-check text-green-500/50"></i> شات GPT-3.5 (محدود)</li>
+                    <li class="flex items-center gap-2 text-[11px] text-gray-400"><i class="fa-solid fa-check text-green-500/50"></i> أدوات الطقس والصلاة</li>
+                    <li class="flex items-center gap-2 text-[11px] text-gray-500"><i class="fa-solid fa-xmark text-red-500/50"></i> رسم الصور بطيء</li>
+                </ul>
+                <button class="w-full py-2 rounded-lg bg-slate-700/50 text-gray-500 text-xs font-bold cursor-not-allowed">الحالية</button>
+            </div>
+
+            <div class="glass-card card-pro mb-6 relative overflow-hidden">
+                <div class="absolute -right-6 top-3 bg-yellow-500 text-black text-[9px] font-bold px-8 py-1 rotate-45 shadow-sm">الأكثر طلباً</div>
+                <div class="flex flex-col items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-xl shadow-lg shadow-yellow-500/30 mb-2 text-slate-900 floating">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div class="text-lg font-black text-white shimmer-text">Dza-Genius PRO</div>
+                    <div class="flex items-baseline gap-1 mt-1">
+                        <span class="text-2xl font-bold text-white font-mono">500</span>
+                        <span class="text-xs text-yellow-500 font-bold">DA / شهر</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-3 mb-6 px-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded bg-yellow-500/10 flex items-center justify-center"><i class="fa-solid fa-bolt text-yellow-400 text-xs"></i></div>
+                        <div class="text-xs text-gray-200">ذكاء GPT-4o سريع جداً</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded bg-purple-500/10 flex items-center justify-center"><i class="fa-solid fa-image text-purple-400 text-xs"></i></div>
+                        <div class="text-xs text-gray-200">رسم صور HD (غير محدود)</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded bg-green-500/10 flex items-center justify-center"><i class="fa-solid fa-microphone text-green-400 text-xs"></i></div>
+                        <div class="text-xs text-gray-200">وضع المحادثة الصوتية</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 rounded bg-blue-500/10 flex items-center justify-center"><i class="fa-solid fa-ban text-blue-400 text-xs"></i></div>
+                        <div class="text-xs text-gray-200">بدون إعلانات نهائياً</div>
+                    </div>
+                </div>
+
+                <button onclick="togglePaymentModal(true)" class="w-full py-3 rounded-xl bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 font-bold text-sm shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/40 transition-all active:scale-95 flex items-center justify-center gap-2">
+                    ترقية الآن <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="glass-card card-ultimate mb-20 opacity-90 hover:opacity-100 transition">
+                <div class="flex justify-between items-center mb-4 border-b border-purple-500/20 pb-3">
+                    <div>
+                        <div class="text-sm font-black text-purple-300">ULTIMATE <span class="text-[8px] bg-purple-900 border border-purple-500/50 px-1 rounded ml-1">سنوي</span></div>
+                        <div class="text-[10px] text-gray-400">للمبرمجين والشركات</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-bold text-white font-mono">4500 <span class="text-[10px] text-gray-500">DA</span></div>
+                        <div class="text-[8px] text-green-400">توفير شهرين مجاناً</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                    <div class="bg-slate-900/50 p-2 rounded border border-purple-500/10 text-[10px] text-center text-gray-300">GPT-4 Turbo</div>
+                    <div class="bg-slate-900/50 p-2 rounded border border-purple-500/10 text-[10px] text-center text-gray-300">تحليل ملفات PDF</div>
+                    <div class="bg-slate-900/50 p-2 rounded border border-purple-500/10 text-[10px] text-center text-gray-300">كتابة أكواد برمجية</div>
+                    <div class="bg-slate-900/50 p-2 rounded border border-purple-500/10 text-[10px] text-center text-gray-300">أولوية 24/7</div>
+                </div>
+                <button onclick="togglePaymentModal(true)" class="w-full py-2.5 rounded-lg border border-purple-500 text-purple-300 text-xs font-bold hover:bg-purple-900/20 transition">
+                    اختر الباقة السنوية
+                </button>
             </div>
         </main>
 
@@ -206,7 +317,6 @@
                         </button>
                     </div>
                 </div>
-
                 <div id="userInfoSection" class="hidden flex-col gap-3">
                     <div class="flex items-center gap-3">
                         <img id="userImgDisplay" src="" class="w-12 h-12 rounded-full border-2 border-slate-600">
@@ -229,6 +339,13 @@
                     <button onclick="setMode('admin', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400 border border-transparent transition flex items-center justify-center gap-2"><span class="text-lg">⚖️</span> إداري</button>
                     <button onclick="setMode('tech', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400 border border-transparent transition flex items-center justify-center gap-2"><span class="text-lg">💻</span> مبرمج</button>
                     <button onclick="setMode('chef', this)" class="mode-btn bg-slate-800 p-3 rounded-xl text-xs text-gray-400 border border-transparent transition flex items-center justify-center gap-2"><span class="text-lg">🍳</span> شاف</button>
+                </div>
+            </div>
+            
+            <div class="mt-4" onclick="nav('premium')">
+                <div class="w-full py-3 bg-gradient-to-r from-yellow-900/40 to-slate-800 border border-yellow-500/20 rounded-xl flex items-center justify-between px-4 cursor-pointer hover:border-yellow-500/50 transition">
+                    <span class="text-xs font-bold text-yellow-500"><i class="fa-solid fa-crown ml-2"></i> اشتراك Premium</span>
+                    <i class="fa-solid fa-angle-left text-gray-500 text-xs"></i>
                 </div>
             </div>
 
@@ -268,7 +385,7 @@
             lat: 36.75, lon: 3.05, city: "الجزائر", 
             mode: 'darja', 
             voice: false,
-            currencyRate: 250 // الافتراضي
+            currencyRate: 250 
         };
         let chatHistory = [];
         
@@ -278,7 +395,7 @@
             renderChat();
             updateUI();
             getUserLocation();
-            setInterval(updatePrayerCountdown, 1000); // تحديث العداد كل ثانية
+            setInterval(updatePrayerCountdown, 1000);
         };
 
         function loadSettings() {
@@ -286,14 +403,6 @@
             if(saved) settings = {...settings, ...JSON.parse(saved)};
             const hist = localStorage.getItem('dza_history');
             if(hist) chatHistory = JSON.parse(hist);
-            
-            // استعادة وضع الصوت
-            const vBtn = document.getElementById('voiceToggleBtn');
-            if(settings.voice) {
-                vBtn.innerHTML = '<i class="fa-solid fa-volume-high text-green-400 text-xs"></i>';
-                vBtn.classList.add('border-green-500');
-            }
-            // استعادة سعر الصرف
             document.getElementById('currentRate').innerText = settings.currencyRate;
         }
 
@@ -301,7 +410,22 @@
             localStorage.setItem('dza_settings', JSON.stringify(settings));
         }
 
-        // --- 4. وظائف الشات والذكاء الاصطناعي ---
+        // --- 4. Premium Logic ---
+        function togglePaymentModal(show) {
+            const modal = document.getElementById('paymentModal');
+            if(show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert("تم نسخ الرقم: " + text);
+        }
+
+        // --- 5. وظائف الشات والذكاء الاصطناعي ---
         const MODES = {
             darja: { prompt: "You are Dza-Genius, an Algerian AI assistant. Speak Algerian Darja (Arabic mixed with French). Be helpful, witty, and concise." },
             admin: { prompt: "Act as an expert in Algerian Bureaucracy. Write formal requests in Arabic." },
@@ -318,13 +442,10 @@
             input.style.height = 'auto';
             addMessage('user', text);
 
-            // الرسم
             if (text.startsWith("ارسم") || text.toLowerCase().startsWith("draw")) {
                 const prompt = text.replace(/ارسم|لي|draw/gi, "").trim();
                 const id = addLoader();
                 const imgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?nologo=true&width=1024&height=1024&model=flux`;
-                
-                // تحميل الصورة مسبقاً للتأكد من وجودها
                 const img = new Image();
                 img.onload = () => {
                     removeLoader(id);
@@ -334,21 +455,15 @@
                 return;
             }
 
-            // النص (Streaming Simulation)
             const id = addLoader();
             try {
                 const systemP = MODES[settings.mode].prompt + ` [Context: City=${settings.city}, User=${user.data?.displayName || 'Guest'}]`;
                 const url = `https://text.pollinations.ai/${encodeURIComponent(systemP + "\nUser: " + text)}?model=openai`;
-                
                 const res = await fetch(url);
                 const reply = await res.text();
-                
                 removeLoader(id);
-                // Streaming effect func
                 typeMessage(reply);
-                
                 if(settings.voice) speak(reply);
-
             } catch (e) {
                 removeLoader(id);
                 addMessage('system', 'حدث خطأ في الاتصال، حاول مجدداً.');
@@ -356,7 +471,6 @@
         }
 
         function typeMessage(text) {
-            // إضافة عنصر فارغ أولاً
             chatHistory.push({ role: 'assistant', content: text });
             if(chatHistory.length > 20) chatHistory.shift();
             localStorage.setItem('dza_history', JSON.stringify(chatHistory));
@@ -369,19 +483,15 @@
             container.appendChild(div);
 
             let i = 0;
-            // سرعة الكتابة
             const speed = 15; 
-            
             function type() {
                 if (i < text.length) {
-                    // إذا كان هناك كود ماركداون، قم بتجاوز التأثير وعرضه مباشرة لتجنب تكسر التنسيق
-                    // (حل بسيط: عرض النص كاملاً ثم تفعيله، أو استخدام مكتبة، هنا سنعرضه بشكل بسيط)
                     div.innerHTML = marked.parse(text.substring(0, i+1));
-                    i += Math.floor(Math.random() * 5) + 1; // سرعة متغيرة لتبدو طبيعية
+                    i += Math.floor(Math.random() * 5) + 1;
                     document.getElementById('view-chat').scrollTo(0, document.getElementById('view-chat').scrollHeight);
                     setTimeout(type, speed);
                 } else {
-                    div.innerHTML = marked.parse(text); // النص النهائي
+                    div.innerHTML = marked.parse(text);
                     setupCodeBlocks(div);
                 }
             }
@@ -393,15 +503,14 @@
                 chatHistory.push({ role, content });
                 localStorage.setItem('dza_history', JSON.stringify(chatHistory));
             }
-            
             const container = document.getElementById('chatContainer');
             const div = document.createElement('div');
-            
             if (role === 'system') {
                 div.className = 'text-center text-[10px] text-yellow-400 my-2 px-4 bg-yellow-900/10 rounded py-1';
                 div.innerText = content;
             } else {
                 div.className = `msg-bubble ${role === 'user' ? 'msg-user' : 'msg-bot'}`;
+                if(role === 'assistant' && user.isPro) div.classList.add('msg-vip');
                 div.innerHTML = role === 'user' ? content : marked.parse(content);
                 if(role === 'assistant') setupCodeBlocks(div);
             }
@@ -412,7 +521,6 @@
         function setupCodeBlocks(element) {
             element.querySelectorAll('pre code').forEach((block) => {
                 hljs.highlightElement(block);
-                // زر النسخ
                 const pre = block.parentElement;
                 if(!pre.querySelector('.copy-btn')) {
                     const btn = document.createElement('button');
@@ -458,20 +566,7 @@
         }
         function removeLoader(id) { const el = document.getElementById(id); if(el) el.remove(); }
 
-        // --- 5. الأدوات (Tools) ---
-        
-        // تحويل الأرقام لحروف (Tafqit Simplified)
-        function convertNumberToWords() {
-            const num = parseInt(document.getElementById('chequeAmount').value);
-            const output = document.getElementById('chequeText');
-            if(!num) { output.innerText = "اكتب مبلغاً صحيحاً"; return; }
-            
-            // دالة بسيطة جداً للعرض (يمكن استبدالها بمكتبة Tafqit.js لمزيد من الدقة)
-            // هنا سنضع رسالة توضيحية فقط لأن الكود الكامل للتفقيط طويل جداً
-            output.innerHTML = `المبلغ: <span class="text-white">${num} دينار جزائري</span><br><span class="text-[10px] text-gray-400">(ميزة التفقيط الكاملة تحتاج مكتبة خارجية، تم اختصارها في هذا المثال)</span>`;
-        }
-
-        // حساب المفتاح CCP
+        // --- 6. Tools Helper Functions ---
         function calcKey() {
             const num = document.getElementById('ccpInput').value;
             if(num) {
@@ -479,8 +574,6 @@
                 document.getElementById('ccpRes').innerHTML = `المفتاح هو: <span class="text-blue-400 text-2xl">${key.toString().padStart(2, '0')}</span>`;
             }
         }
-
-        // تحويل العملة
         function editRate() {
             const newRate = prompt("أدخل سعر الأورو الحالي (دج):", settings.currencyRate);
             if(newRate && !isNaN(newRate)) {
@@ -493,16 +586,14 @@
         function calcCurrency() {
             const amount = document.getElementById('currAmount').value;
             const type = document.getElementById('currType').value;
-            const rate = type === 'eur' ? settings.currencyRate : (settings.currencyRate - 30); // تقريبي للدولار
+            const rate = type === 'eur' ? settings.currencyRate : (settings.currencyRate - 30);
             document.getElementById('currResult').innerText = (amount * rate).toLocaleString() + " DA";
         }
         document.getElementById('currAmount').addEventListener('input', calcCurrency);
         document.getElementById('currType').addEventListener('change', calcCurrency);
 
-        // الصلاة والطقس
         async function refreshTools() {
             try {
-                // Weather
                 const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${settings.lat}&longitude=${settings.lon}&current_weather=true`);
                 const wData = await wRes.json();
                 document.getElementById('weatherTemp').innerText = `${Math.round(wData.current_weather.temperature)}°`;
@@ -512,26 +603,20 @@
         }
 
         function updatePrayerCountdown() {
-            // استخدام Adhan.js
             if(typeof adhan === 'undefined') return;
-            
             const coords = new adhan.Coordinates(settings.lat, settings.lon);
             const params = adhan.CalculationMethod.MuslimWorldLeague();
-            params.madhab = adhan.Madhab.Shafi; // الجزائريون مالكية، الشافعي أقرب في الحساب للجمهور في المكتبة
+            params.madhab = adhan.Madhab.Shafi;
             const date = new Date();
             const prayerTimes = new adhan.PrayerTimes(coords, date, params);
-            
             const next = prayerTimes.nextPrayer();
             const nextTime = prayerTimes.timeForPrayer(next);
-            
             const names = { fajr: 'الصبح', dhuhr: 'الظهر', asr: 'العصر', maghrib: 'المغرب', isha: 'العشاء', none: 'غداً' };
-            
             if(next !== 'none') {
                 const diff = nextTime - date;
                 const h = Math.floor(diff / 3600000);
                 const m = Math.floor((diff % 3600000) / 60000);
                 const s = Math.floor((diff % 60000) / 1000);
-                
                 document.getElementById('nextPrayerName').innerText = names[next];
                 document.getElementById('nextPrayerCounter').innerText = `-${h}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
             } else {
@@ -540,27 +625,12 @@
             }
         }
 
-        // --- 6. الصوت والموقع ---
-        function toggleVoice() {
-            settings.voice = !settings.voice;
-            const btn = document.getElementById('voiceToggleBtn');
-            if(settings.voice) {
-                btn.innerHTML = '<i class="fa-solid fa-volume-high text-green-400 text-xs"></i>';
-                btn.classList.add('border-green-500');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-volume-xmark text-xs"></i>';
-                btn.classList.remove('border-green-500');
-                window.speechSynthesis.cancel();
-            }
-            saveLocal();
-        }
-
+        // --- 7. Voice & Location ---
         function speak(text) {
             if(!window.speechSynthesis) return;
-            // تنظيف النص من الماركداون والرموز
             const cleanText = text.replace(/[*_#`]/g, ''); 
             const utterance = new SpeechSynthesisUtterance(cleanText);
-            utterance.lang = 'ar-SA'; // أو ar-DZ إن وجد
+            utterance.lang = 'ar-SA';
             utterance.rate = 1.1;
             window.speechSynthesis.speak(utterance);
         }
@@ -582,7 +652,7 @@
             });
         }
 
-        // --- 7. Auth & UI Helpers ---
+        // --- 8. UI Helpers ---
         function updateUI() { document.getElementById('headerCity').innerText = settings.city; }
         function setInput(t) { document.getElementById('msgInput').value = t; sendMessage(); }
         function clearChat() { if(confirm("مسح المحادثة؟")) { chatHistory=[]; renderChat(); localStorage.removeItem('dza_history'); } }
@@ -591,8 +661,12 @@
         function nav(pageId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('view-'+pageId).classList.add('active');
+            
+            // Handle bottom nav active state
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            if(btn) btn.classList.add('active');
+            if(btn && btn.classList.contains('nav-item')) {
+                btn.classList.add('active');
+            }
         }
 
         function setMode(mode, btn) {
@@ -607,7 +681,7 @@
             addMessage('system', `تم تغيير الشخصية: ${btn.innerText}`);
         }
 
-        // Auth Logic (Simplified)
+        // Auth Logic
         function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider).catch(e => alert(e.message));
@@ -623,8 +697,6 @@
                 document.getElementById('userNameDisplay').innerText = u.displayName;
                 document.getElementById('emailDisplay').innerText = u.email;
                 document.getElementById('userImgDisplay').src = u.photoURL;
-                
-                // Firestore Check
                 db.collection("users").doc(u.uid).get().then((doc) => {
                     if(doc.exists && doc.data().isPro) {
                         user.isPro = true;
@@ -639,4 +711,4 @@
         });
     </script>
 </body>
-                            </html>
+    </html>
